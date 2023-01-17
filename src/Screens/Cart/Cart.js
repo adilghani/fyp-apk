@@ -1,55 +1,243 @@
 import React from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
-import LeftICon from '../../../assets/images/Lefticon';
-import Input from '../../components/Input/Input';
-import {primary} from '../../Utils/ColorScheme/Colors';
+import {
+  FlatList,
+  Image,
+  ImageBackground,
+  ScrollView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
+import {View} from 'react-native';
 import styles from './style';
-import Entypo from 'react-native-vector-icons/Entypo';
-import Button from '../../components/Button/Button';
-import Right from '../../../assets/images/Right';
+import Modal from 'react-native-modal';
+import Spinner from 'react-native-spinkit';
+import Dialog from 'react-native-dialog';
+import Danger from '../../../assets/images/Danger';
+import {primary, WhiteColor} from '../../Utils/ColorScheme/Colors';
+import {Dimensions} from 'react-native';
+import storage from '@react-native-firebase/storage';
+import {firebase} from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Cart = props => {
+  const [message, setMessage] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const [whatopen, setwhatopen] = React.useState('');
+  const [dialogVisible, setdialogVisible] = React.useState(false);
+  const [image, setimage] = React.useState();
+  const [data, setuserData] = React.useState([]);
+  const [productsname, setProductName] = React.useState([]);
+  const [userid, setuserid] = React.useState();
+
+  console.log('data', userid);
+  const getadminid = async () => {
+    const getid = await AsyncStorage.getItem('id');
+    console.log('getid', getid);
+    setuserid(getid);
+  };
+  React.useEffect(() => {
+    getadminid();
+  }, []);
+
+  const getImage = async () => {
+    setLoading(true);
+    await firebase
+      .firestore()
+      .collection('Products')
+      .get()
+      // firebase
+      //   .firestore()
+      //   .collection('Products')
+      //   .get()
+      .then(querySnapshot => {
+        const arr = [];
+        const pro = [];
+        querySnapshot.forEach(snapshot => {
+          let data = snapshot.data();
+          console.log('userdata', data.userid + userid);
+          arr.push(data);
+          if (data.userid == userid) {
+            console.log('datacondition', data);
+          }
+          // pro.push(data.PrductName);
+        });
+        setuserData(arr);
+        setProductName(pro);
+      });
+    // await familyregister();
+    // const url = await storage().ref('adminproducts').getDownloadURL();
+    // console.log(url);
+    setLoading(false);
+    // setimage(url);
+  };
+  React.useEffect(() => {
+    getImage();
+  }, []);
+  // const cat = [
+  //   {
+  //     name: 'Wireless Earbuds',
+  //     img: require('../../../components/assets/1.jpg'),
+  //   },
+  //   {
+  //     name: 'Sports',
+  //     img: require('../../../components/assets/2.jpg'),
+  //   },
+  //   {
+  //     name: 'Hats & Caps',
+  //     img: require('../../../components/assets/3.jpg'),
+  //   },
+  //   {
+  //     name: 'Cables convert',
+  //     img: require('../../../components/assets/2.jpg'),
+  //   },
+  //   {
+  //     name: 'Cables convert',
+  //     img: require('../../../components/assets/1.jpg'),
+  //   },
+  //   {
+  //     name: 'Hats & Caps',
+  //     img: require('../../../components/assets/2.jpg'),
+  //   },
+  //   {
+  //     name: 'Cables convert',
+  //     img: require('../../../components/assets/3.jpg'),
+  //   },
+  //   {
+  //     name: 'Cables convert',
+  //     img: require('../../../components/assets/1.jpg'),
+  //   },
+  //   {
+  //     name: 'Cables convert',
+  //     img: require('../../../components/assets/1.jpg'),
+  //   },
+  //   {
+  //     name: 'Cables convert',
+  //     img: require('../../../components/assets/1.jpg'),
+  //   },
+  //   {
+  //     name: 'Hats & Caps',
+  //     img: require('../../../components/assets/2.jpg'),
+  //   },
+  //   {
+  //     name: 'Cables convert',
+  //     img: require('../../../components/assets/3.jpg'),
+  //   },
+  //   {
+  //     name: 'Cables convert',
+  //     img: require('../../../components/assets/1.jpg'),
+  //   },
+  //   {
+  //     name: 'Cables convert',
+  //     img: require('../../../components/assets/1.jpg'),
+  //   },
+  //   {
+  //     name: 'Cables convert',
+  //     img: require('../../../components/assets/1.jpg'),
+  //   },
+  // ];
   return (
     <View style={styles.main}>
-      <View style={styles.headercon}>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('TabNavigation')}>
-          <Right />
-        </TouchableOpacity>
-        <Text style={styles.addtitle}>My Cart</Text>
-      </View>
-      <View style={{marginTop: 20}}>
-        <Image
-          source={require('../../components/assets/mainimge.jpg')}
-          style={{width: '100%', height: 200}}
-        />
-      </View>
-      <View style={styles.cartcard}>
-        <View>
-          <Text style={styles.title}>Sport watch</Text>
-          <Text style={styles.decs}>
-            this watsch you can see all the route and running part
-          </Text>
+      <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
+      <Modal
+        isVisible={loading}
+        style={{
+          flex: 1,
+          margin: 0,
+          // height: height,
+          // width: width,
+          backgroundColor: 'transparent',
+        }}>
+        <View
+          style={{
+            flex: 1,
+            margin: 0,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'transparent',
+          }}>
+          <Spinner type="ThreeBounce" size={50} color={primary} />
         </View>
-        <View style={styles.btncon}>
-          <TouchableOpacity style={styles.btn}>
-            <Text style={styles.btntitle}>-</Text>
-          </TouchableOpacity>
-          <Text style={styles.count}>1</Text>
-          <TouchableOpacity style={styles.btn}>
-            <Text style={styles.btntitle}>+</Text>
-          </TouchableOpacity>
+      </Modal>
+      <Dialog.Container
+        visible={dialogVisible}
+        contentStyle={{
+          borderRadius: 10,
+          backgroundColor: WhiteColor,
+          width: Dimensions.get('screen').width / 1.1,
+        }}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <Danger />
+          <View style={styles.cancelcon}>
+            <Text style={styles.canceltilte}>
+              {' '}
+              {whatopen == 'done' ? 'Success' : 'Error'}
+            </Text>
+            <Text style={styles.canceldet}>{message}</Text>
+          </View>
+          <View style={styles.cancelbtncon}>
+            <TouchableOpacity
+              onPress={() => {
+                whatopen == 'done'
+                  ? props.navigation.navigate('Home') & setdialogVisible(false)
+                  : setdialogVisible(false);
+              }}
+              style={[
+                styles.cancelbtn,
+                {
+                  borderWidth: 2,
+                  borderColor: primary,
+                  backgroundColor: primary,
+                  marginLeft: 15,
+                  marginTop: 30,
+                },
+              ]}>
+              <Text style={[styles.cancelbtntitle, {color: WhiteColor}]}>
+                {whatopen == 'done' ? 'Continue' : 'Try Again'}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
+      </Dialog.Container>
+
+      <View style={styles.catcon}>
+        <Text style={styles.cattitle}> MY Products</Text>
       </View>
-      <View style={styles.bottomcon}>
-        <View style={{alignItems: 'center'}}>
-          <Text style={styles.btntitle}>Total price</Text>
-          <Text style={styles.btntitle}>$ 23.00</Text>
-        </View>
-        <TouchableOpacity style={styles.checkoutcon}>
-          <Text style={styles.checkouttitle}>Checkout</Text>
-        </TouchableOpacity>
-      </View>
+      <ScrollView>
+        {data == undefined ? null : (
+          <View
+            style={{
+              marginTop: 20,
+              alignSelf: 'center',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <FlatList
+              contentContainerStyle={{paddingBottom: 70}}
+              numColumns={2}
+              data={data}
+              renderItem={({item, index}) => {
+                console.log('item', item);
+                return (
+                  <TouchableOpacity
+                    style={styles.cardcon}
+                    onPress={() =>
+                      props.navigation.navigate('ViewDetailProduct', {
+                        item: item,
+                      })
+                    }>
+                    <Image
+                      source={{uri: item.productImage}}
+                      style={{width: 90, height: 120}}
+                    />
+                    <Text style={styles.name}>{item.PrductName}</Text>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
+        )}
+      </ScrollView>
     </View>
   );
 };

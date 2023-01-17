@@ -1,5 +1,12 @@
 import React from 'react';
-import {FlatList, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  Platform,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import LeftICon from '../../../../assets/images/Lefticon';
 import Input from '../../../components/Input/Input';
 import {primary, WhiteColor} from '../../../Utils/ColorScheme/Colors';
@@ -17,6 +24,7 @@ import {Dimensions} from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {Image} from 'react-native';
 import storage from '@react-native-firebase/storage';
+import ImagePicker from 'react-native-image-crop-picker';
 const AdminAddCategories = props => {
   const [userid, setuserid] = React.useState('');
   const [Restorentname, setRestorentname] = React.useState();
@@ -30,15 +38,24 @@ const AdminAddCategories = props => {
   const [image, setImage] = React.useState();
   const [selectimage, setSelectImage] = React.useState();
   const [key, setkey] = React.useState('1');
-  console.log('uri', selectimage);
+  console.log('uri', image);
 
   // launchImageLibrary(options callback)
   const getpick = async () => {
-    const result = await launchImageLibrary();
-    console.log('gt', result);
-    setImage(result.assets);
-    result.assets.map(item => {
-      setSelectImage(item.uri);
+    // const result = await launchImageLibrary();
+    // console.log('gt', result);
+    // setImage(result.assets);
+    // result.assets.map(item => {
+    //   setSelectImage(item.uri);
+    // });
+    ImagePicker.openPicker({
+      width: 300,
+      height: 400,
+      cropping: true,
+    }).then(image => {
+      console.log(image);
+      const imageuri = Platform.OS == 'ios' ? image.sourceURL : image.path;
+      setImage(imageuri);
     });
   };
 
@@ -53,6 +70,8 @@ const AdminAddCategories = props => {
     getadminid();
   }, []);
   const submitdata = async () => {
+    const imageuri = await uploadimage();
+    console.log('iamge uri', imageuri);
     if (image == undefined) {
       setdialogVisible(true);
       setMessage('Please add image');
@@ -67,34 +86,54 @@ const AdminAddCategories = props => {
       setMessage('Fields Required');
       setwhatopen('notdone');
     } else {
-      try {
-        setLoading(true);
-        await storage().ref('adminproducts').putFile(selectimage);
-        firebase
-          .firestore()
-          .collection('Products')
-          .add({
-            restorentName: Restorentname,
-            PrductName: ProductName,
-            PickupPoint: pcikuppoint,
-            description: description,
-            userid: userid,
-            productkey: 'adminproducts',
-          })
-          .then(ref => {
-            setLoading(false);
-
-            console.log(ref);
-          });
-      } catch (e) {
-        setLoading(false);
-        console.log('???', e);
-      }
+      firebase
+        .firestore()
+        .collection('Products')
+        .add({
+          restorentName: Restorentname,
+          PrductName: ProductName,
+          PickupPoint: pcikuppoint,
+          description: description,
+          userid: userid,
+          productkey: 'adminproducts',
+          productImage: imageuri,
+        })
+        .then(ref => {
+          setLoading(false);
+          console.log(ref);
+          setdialogVisible(true);
+          setMessage('Product add Succefully ');
+          setwhatopen('done');
+        });
     }
+  };
+  const uploadimage = async () => {
+    const uploaduri = image;
+    let filename = uploaduri.substring(uploaduri.lastIndexOf('/') + 1);
+    const extension = filename.split('.').pop();
+    const name = filename.split('.').slice(0, -1).join('.');
+    filename = name + Date.now() + '.' + extension;
+    const storageref = storage().ref(filename);
+    const task = storageref.putFile(uploaduri);
+
+    try {
+      setLoading(true);
+      await task;
+      const url = storageref.getDownloadURL();
+      setLoading(false);
+      setImage(null);
+      return url;
+    } catch (e) {
+      setLoading(false);
+      console.log('???', e);
+      return null;
+    }
+    // }
     // const uploaduri = selectimage;
     // let filename = uploaduri.substring(uploaduri.lastIndexOf('/') + 1);
     setSelectImage(null);
   };
+
   return (
     <View style={styles.main}>
       <Modal
@@ -134,7 +173,8 @@ const AdminAddCategories = props => {
             <TouchableOpacity
               onPress={() => {
                 whatopen == 'done'
-                  ? props.navigation.navigate('Login') & setdialogVisible(false)
+                  ? props.navigation.navigate('AdminHome') &
+                    setdialogVisible(false)
                   : setdialogVisible(false);
               }}
               style={[
@@ -200,22 +240,13 @@ const AdminAddCategories = props => {
             <Text style={styles.addimg}>Add Image</Text>
           </TouchableOpacity>
           {image == undefined || image == null ? null : (
-            <View>
-              <FlatList
-                data={image}
-                renderItem={({item, index}) => {
-                  return (
-                    <View style={{alignSelf: 'center', marginTop: 15}}>
-                      <Image
-                        source={{uri: item.uri}}
-                        style={{
-                          width: Dimensions.get('screen').width / 1.1,
-                          height: 130,
-                          resizeMode: 'cover',
-                        }}
-                      />
-                    </View>
-                  );
+            <View style={{alignSelf: 'center', marginTop: 15}}>
+              <Image
+                source={{uri: image}}
+                style={{
+                  width: Dimensions.get('screen').width / 1.1,
+                  height: 130,
+                  resizeMode: 'cover',
                 }}
               />
             </View>

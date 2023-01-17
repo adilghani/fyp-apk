@@ -25,11 +25,24 @@ const AdminHome = props => {
   const [whatopen, setwhatopen] = React.useState('');
   const [dialogVisible, setdialogVisible] = React.useState(false);
   const [image, setimage] = React.useState();
-  const [data, setuserData] = React.useState();
-  console.log('data', data);
+  const [data, setuserData] = React.useState([]);
+  const [productsname, setProductName] = React.useState([]);
+
+  console.log('data', productsname);
+  const familyregister = async () => {
+    const imagearr = [];
+
+    for (const v of productsname) {
+      const url = await storage().ref(v.toString()).getDownloadURL();
+      imagearr.push(url);
+
+      // const blockresult = await setData(v, );
+    }
+    console.log('VVVVVVVV', imagearr);
+  };
   const getImage = async () => {
     setLoading(true);
-    firebase
+    await firebase
       .firestore()
       .collection('Products')
       .get()
@@ -38,17 +51,23 @@ const AdminHome = props => {
       //   .collection('Products')
       //   .get()
       .then(querySnapshot => {
+        const arr = [];
+        const pro = [];
         querySnapshot.forEach(snapshot => {
           let data = snapshot.data();
-          console.log('userdata', data);
-          setuserData([data]);
-        });
-      });
+          console.log('userdata', snapshot.data());
 
-    const url = await storage().ref('adminproducts').getDownloadURL();
-    console.log(url);
+          arr.push(data);
+          // pro.push(data.PrductName);
+        });
+        setuserData(arr);
+        setProductName(pro);
+      });
+    // await familyregister();
+    // const url = await storage().ref('adminproducts').getDownloadURL();
+    // console.log(url);
     setLoading(false);
-    setimage(url);
+    // setimage(url);
   };
   React.useEffect(() => {
     getImage();
@@ -180,7 +199,7 @@ const AdminHome = props => {
         style={{width: '100%', height: 200}}
         imageStyle={{resizeMode: 'cover'}}></ImageBackground>
       <View style={styles.catcon}>
-        <Text style={styles.cattitle}>Categories</Text>
+        <Text style={styles.cattitle}>Products</Text>
         <TouchableOpacity>
           <Text style={styles.shopmore}>SHOP MORE</Text>
         </TouchableOpacity>
@@ -193,15 +212,17 @@ const AdminHome = props => {
               numColumns={5}
               data={data}
               renderItem={({item, index}) => {
-                console.log('item', item.PrductName);
+                console.log('item', item);
                 return (
                   <TouchableOpacity
                     style={styles.cardcon}
                     onPress={() =>
-                      props.navigation.navigate('AdminViewProducts')
+                      props.navigation.navigate('AdminViewDetailProduct', {
+                        item: item,
+                      })
                     }>
                     <Image
-                      source={{uri: image}}
+                      source={{uri: item.productImage}}
                       style={{width: 90, height: 120}}
                     />
                     <Text style={styles.name}>{item.PrductName}</Text>

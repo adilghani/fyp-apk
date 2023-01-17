@@ -2,8 +2,13 @@ import React from 'react';
 import {TouchableOpacity, View, Image, Text, FlatList} from 'react-native';
 import LeftICon from '../../../assets/images/Lefticon';
 import Right from '../../../assets/images/Right';
+import {save_role} from '../Login/Login';
 import styles from './styles';
-const Profile = () => {
+const Profile = props => {
+  const logout = async () => {
+    const value = await save_role('null');
+    props.navigation.navigate('Login');
+  };
   const Tabs = [
     {
       name: 'Personal information',
@@ -37,7 +42,11 @@ const Profile = () => {
           data={Tabs}
           renderItem={({item, index}) => {
             return (
-              <TouchableOpacity style={styles.persolacon}>
+              <TouchableOpacity
+                style={styles.persolacon}
+                onPress={() => {
+                  item.name == 'Logout' ? logout() : null;
+                }}>
                 <Text style={styles.persolaltitle}>{item.name}</Text>
                 <LeftICon />
               </TouchableOpacity>

@@ -20,6 +20,9 @@ export const save_user_id = async id => {
 export const save_admin_id = async id => {
   await AsyncStorage.setItem('adminid', JSON.stringify(id));
 };
+export const save_role = async id => {
+  await AsyncStorage.setItem('role', JSON.stringify(id));
+};
 const Login = props => {
   const [dialogVisible, setdialogVisible] = React.useState(false);
   const [message, setMessage] = React.useState('');
@@ -39,11 +42,13 @@ const Login = props => {
         if (data.user.email == 'admin@gmail.com') {
           props.navigation.navigate('AdminTab');
           save_admin_id(data.user.uid);
+          save_role('admin');
         } else {
           props.navigation.navigate('TabNavigation');
           save_user_id(data.user.uid);
+          save_role('user');
         }
-        console.log('User account created & signed in!', data.user.email);
+        console.log('User account created & signed in!', data.user.uid);
         // if ((data.user.email = email)) {
         // }
         // setdialogVisible(true);
@@ -81,6 +86,20 @@ const Login = props => {
 
           setdialogVisible(true);
           setMessage('The password is invalid');
+        }
+        if (error.code === 'auth/unknown') {
+          console.log('Something went Wrong');
+          setwhatopen('notdone');
+
+          setdialogVisible(true);
+          setMessage('Something went Wrong');
+        }
+        if (error.code === 'auth/network-request-failed') {
+          console.log('Netwotk Error');
+          setwhatopen('notdone');
+
+          setdialogVisible(true);
+          setMessage('Netwotk Error ');
         }
 
         console.error(error);
