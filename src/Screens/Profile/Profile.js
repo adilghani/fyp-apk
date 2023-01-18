@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import {TouchableOpacity, View, Image, Text, FlatList} from 'react-native';
 import LeftICon from '../../../assets/images/Lefticon';
@@ -7,6 +8,7 @@ import styles from './styles';
 const Profile = props => {
   const logout = async () => {
     const value = await save_role('null');
+    await AsyncStorage.removeItem('id');
     props.navigation.navigate('Login');
   };
   const Tabs = [
