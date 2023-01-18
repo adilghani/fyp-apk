@@ -13,14 +13,14 @@ import styles from './style';
 import Modal from 'react-native-modal';
 import Spinner from 'react-native-spinkit';
 import Dialog from 'react-native-dialog';
-import Danger from '../../../assets/images/Danger';
-import {primary, WhiteColor} from '../../Utils/ColorScheme/Colors';
+import Danger from '../../../../assets/images/Danger';
+import {primary, WhiteColor} from '../../../Utils/ColorScheme/Colors';
 import {Dimensions} from 'react-native';
 import storage from '@react-native-firebase/storage';
 import {firebase} from '@react-native-firebase/firestore';
-import {useFocusEffect} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Home = props => {
+const Adminorders = props => {
   const [message, setMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [whatopen, setwhatopen] = React.useState('');
@@ -28,24 +28,23 @@ const Home = props => {
   const [image, setimage] = React.useState();
   const [data, setuserData] = React.useState([]);
   const [productsname, setProductName] = React.useState([]);
+  const [userid, setuserid] = React.useState();
 
-  console.log('data', productsname);
-  const familyregister = async () => {
-    const imagearr = [];
-
-    for (const v of productsname) {
-      const url = await storage().ref(v.toString()).getDownloadURL();
-      imagearr.push(url);
-
-      // const blockresult = await setData(v, );
-    }
-    console.log('VVVVVVVV', imagearr);
+  console.log('data', userid);
+  const getadminid = async () => {
+    const getid = await AsyncStorage.getItem('id');
+    console.log('getid', getid);
+    setuserid(getid);
   };
+  // React.useEffect(() => {
+  //   getadminid();
+  // }, [data]);
+
   const getImage = async () => {
     setLoading(true);
     await firebase
       .firestore()
-      .collection('Products')
+      .collection('Orders')
       .get()
       // firebase
       //   .firestore()
@@ -56,10 +55,9 @@ const Home = props => {
         const pro = [];
         querySnapshot.forEach(snapshot => {
           let data = snapshot.data();
-          data.id = snapshot.id;
-          console.log('userdata', snapshot.data());
-
+          console.log('userdata', data.userid + userid);
           arr.push(data);
+
           // pro.push(data.PrductName);
         });
         setuserData(arr);
@@ -72,15 +70,12 @@ const Home = props => {
     // setimage(url);
   };
   React.useEffect(() => {
-    getImage();
-  }, []);
-  useFocusEffect(
-    React.useCallback(() => {
+    if (userid == undefined || userid == null) {
+      getadminid();
+    } else {
       getImage();
-
-      // return () => unsubscribe();
-    }, []),
-  );
+    }
+  }, [userid]);
   // const cat = [
   //   {
   //     name: 'Wireless Earbuds',
@@ -206,22 +201,22 @@ const Home = props => {
           </View>
         </View>
       </Dialog.Container>
-      <ImageBackground
-        source={require('../../components/assets/mainimge.jpg')}
-        style={{width: '100%', height: 200}}
-        imageStyle={{resizeMode: 'cover'}}></ImageBackground>
+
       <View style={styles.catcon}>
-        <Text style={styles.cattitle}>Products</Text>
-        <TouchableOpacity>
-          <Text style={styles.shopmore}>SHOP MORE</Text>
-        </TouchableOpacity>
+        <Text style={styles.cattitle}>All Orders</Text>
       </View>
-      <ScrollView horizontal>
+      <ScrollView>
         {data == undefined ? null : (
-          <View style={{marginTop: 20}}>
+          <View
+            style={{
+              marginTop: 20,
+              alignSelf: 'center',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             <FlatList
               contentContainerStyle={{paddingBottom: 70}}
-              numColumns={5}
+              numColumns={2}
               data={data}
               renderItem={({item, index}) => {
                 console.log('item', item);
@@ -229,7 +224,7 @@ const Home = props => {
                   <TouchableOpacity
                     style={styles.cardcon}
                     onPress={() =>
-                      props.navigation.navigate('ViewDetailProduct', {
+                      props.navigation.navigate('OrderDetail', {
                         item: item,
                       })
                     }>
@@ -248,4 +243,4 @@ const Home = props => {
     </View>
   );
 };
-export default Home;
+export default Adminorders;

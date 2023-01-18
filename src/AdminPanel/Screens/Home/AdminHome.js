@@ -18,6 +18,7 @@ import {primary, WhiteColor} from '../../../Utils/ColorScheme/Colors';
 import {Dimensions} from 'react-native';
 import storage from '@react-native-firebase/storage';
 import {firebase} from '@react-native-firebase/firestore';
+import {useFocusEffect} from '@react-navigation/native';
 
 const AdminHome = props => {
   const [message, setMessage] = React.useState('');
@@ -30,15 +31,7 @@ const AdminHome = props => {
 
   console.log('data', productsname);
   const familyregister = async () => {
-    const imagearr = [];
-
-    for (const v of productsname) {
-      const url = await storage().ref(v.toString()).getDownloadURL();
-      imagearr.push(url);
-
-      // const blockresult = await setData(v, );
-    }
-    console.log('VVVVVVVV', imagearr);
+    const uid = auth().currentUser.uid;
   };
   const getImage = async () => {
     setLoading(true);
@@ -55,7 +48,8 @@ const AdminHome = props => {
         const pro = [];
         querySnapshot.forEach(snapshot => {
           let data = snapshot.data();
-          console.log('userdata', snapshot.data());
+          data.id = snapshot.id;
+          console.log('userdata', data.id);
 
           arr.push(data);
           // pro.push(data.PrductName);
@@ -134,6 +128,13 @@ const AdminHome = props => {
       img: require('../../../components/assets/1.jpg'),
     },
   ];
+  useFocusEffect(
+    React.useCallback(() => {
+      getImage();
+
+      // return () => unsubscribe();
+    }, []),
+  );
   return (
     <View style={styles.main}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
@@ -212,7 +213,7 @@ const AdminHome = props => {
               numColumns={5}
               data={data}
               renderItem={({item, index}) => {
-                console.log('item', item);
+                console.log('item', item.id);
                 return (
                   <TouchableOpacity
                     style={styles.cardcon}

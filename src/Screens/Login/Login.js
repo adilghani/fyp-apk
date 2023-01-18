@@ -17,11 +17,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const save_user_id = async id => {
   await AsyncStorage.setItem('id', JSON.stringify(id));
 };
-export const save_admin_id = async id => {
-  await AsyncStorage.setItem('adminid', JSON.stringify(id));
+// export const save_admin_id = async id => {
+//   await AsyncStorage.setItem('adminid', JSON.stringify(id));
+// };
+export const save_userdata = async name => {
+  await AsyncStorage.setItem('userdate', JSON.stringify(name));
 };
-export const save_role = async id => {
-  await AsyncStorage.setItem('role', JSON.stringify(id));
+
+export const save_role = async role => {
+  await AsyncStorage.setItem('role', role);
 };
 const Login = props => {
   const [dialogVisible, setdialogVisible] = React.useState(false);
@@ -41,11 +45,14 @@ const Login = props => {
         console.log('userdata', data.user.uid);
         if (data.user.email == 'admin@gmail.com') {
           props.navigation.navigate('AdminTab');
-          save_admin_id(data.user.uid);
+          save_user_id(data.user.uid);
           save_role('admin');
+          save_userdata(data.user.email);
         } else {
           props.navigation.navigate('TabNavigation');
           save_user_id(data.user.uid);
+          save_userdata(data.user.email);
+
           save_role('user');
         }
         console.log('User account created & signed in!', data.user.uid);

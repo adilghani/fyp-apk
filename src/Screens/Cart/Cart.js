@@ -27,6 +27,8 @@ const Cart = props => {
   const [dialogVisible, setdialogVisible] = React.useState(false);
   const [image, setimage] = React.useState();
   const [data, setuserData] = React.useState([]);
+  // alert(JSON.stringify(data));
+  console.log('userdata', JSON.stringify(data));
   const [productsname, setProductName] = React.useState([]);
   const [userid, setuserid] = React.useState();
 
@@ -36,9 +38,9 @@ const Cart = props => {
     console.log('getid', getid);
     setuserid(getid);
   };
-  React.useEffect(() => {
-    getadminid();
-  }, []);
+  // React.useEffect(() => {
+  //   getadminid();
+  // }, [data]);
 
   const getImage = async () => {
     setLoading(true);
@@ -56,9 +58,9 @@ const Cart = props => {
         querySnapshot.forEach(snapshot => {
           let data = snapshot.data();
           console.log('userdata', data.userid + userid);
-          arr.push(data);
           if (data.userid == userid) {
             console.log('datacondition', data);
+            arr.push(data);
           }
           // pro.push(data.PrductName);
         });
@@ -72,8 +74,12 @@ const Cart = props => {
     // setimage(url);
   };
   React.useEffect(() => {
-    getImage();
-  }, []);
+    if (userid == undefined || userid == null) {
+      getadminid();
+    } else {
+      getImage();
+    }
+  }, [userid]);
   // const cat = [
   //   {
   //     name: 'Wireless Earbuds',
@@ -204,7 +210,11 @@ const Cart = props => {
         <Text style={styles.cattitle}> MY Products</Text>
       </View>
       <ScrollView>
-        {data == undefined ? null : (
+        {data == undefined || data === null ? (
+          <View style={{marginTop: 50}}>
+            <Text> Sorry ! You did not add Product yet </Text>
+          </View>
+        ) : (
           <View
             style={{
               marginTop: 20,

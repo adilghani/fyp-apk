@@ -61,26 +61,26 @@ const AdminTab = ({state, descriptors, navigation}) => {
           </TouchableOpacity> */}
 
           <TouchableOpacity
-            style={{
-              marginTop: 10,
-              height: 60,
-              width: 60,
-              borderRadius: 60,
-              justifyContent: 'center',
-              backgroundColor: primary,
-              bottom: 30,
-            }}
+            // style={{
+            //   marginTop: 10,
+            //   height: 60,
+            //   width: 60,
+            //   borderRadius: 60,
+            //   justifyContent: 'center',
+            //   backgroundColor: primary,
+            //   bottom: 30,
+            // }}
             onPress={() => props.navigation.navigate('AdminAddCategories')}>
             <Entypo
               name="plus"
-              color={WhiteColor}
+              color={'#b7b7b7'}
               size={30}
               style={{alignSelf: 'center'}}></Entypo>
           </TouchableOpacity>
-          {/* <TouchableOpacity
-            onPress={() => props.navigation.navigate('Notification')}>
-            <Bellicon />
-          </TouchableOpacity> */}
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('Adminorders')}>
+            <AntDesign name="shoppingcart" size={30} color={'#b7b7b7'} />
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => props.navigation.navigate('AdminProfile')}>
             <FontAwesome name="users" color={Darkcolor} size={30} />

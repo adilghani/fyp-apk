@@ -14,15 +14,14 @@ const Wellcome = props => {
   React.useEffect(async () => {
     setTimeout(async () => {
       try {
-        const value = await AsyncStorage.getItem('role');
-        console.log('>>>>>userdata', value);
-
-        if (value == 'user') {
-          props.navigation.navigate('TabNavigation');
-        } else if (value == 'admin') {
-          props.navigation.navigate('AdminTab');
+        const role = await AsyncStorage.getItem('role');
+        console.log('role', role.toString());
+        if (role === 'user') {
+          props.navigation.replace('TabNavigation');
+        } else if (role === 'admin') {
+          props.navigation.replace('AdminTab');
         } else {
-          props.navigation.navigate('Login');
+          props.navigation.replace('Login');
         }
       } catch (error) {
         console.log(error);
@@ -32,6 +31,7 @@ const Wellcome = props => {
 
     //   props.navigation.navigate("HomeTab")
   }, [hideSplash]);
+
   return (
     <View style={{flex: 1, backgroundColor: WhiteColor}}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />

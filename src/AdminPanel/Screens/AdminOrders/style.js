@@ -4,8 +4,8 @@ import {
   maintitle,
   Darkcolor,
   primary,
-} from '../../Utils/ColorScheme/Colors';
-import {Medium, SemiBold} from '../../Utils/FontFamily/Fonfamily';
+} from '../../../Utils/ColorScheme/Colors';
+import {Medium, SemiBold} from '../../../Utils/FontFamily/Fonfamily';
 
 const styles = StyleSheet.create({
   main: {

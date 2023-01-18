@@ -38,6 +38,8 @@ const AdminAddCategories = props => {
   const [image, setImage] = React.useState();
   const [selectimage, setSelectImage] = React.useState();
   const [key, setkey] = React.useState('1');
+  const [price, setPrice] = React.useState();
+
   console.log('uri', image);
 
   // launchImageLibrary(options callback)
@@ -62,7 +64,7 @@ const AdminAddCategories = props => {
   // You can also use as a promise without 'callback':
   // const result = await launchImageLibrary()
   const getadminid = async () => {
-    const getid = await AsyncStorage.getItem('adminid');
+    const getid = await AsyncStorage.getItem('id');
     console.log('getid', getid);
     setuserid(getid);
   };
@@ -97,6 +99,7 @@ const AdminAddCategories = props => {
           userid: userid,
           productkey: 'adminproducts',
           productImage: imageuri,
+          price: price,
         })
         .then(ref => {
           setLoading(false);
@@ -229,6 +232,12 @@ const AdminAddCategories = props => {
               titleInput={'Description'}
               value={description}
               onChangeText={text => setDescription(text)}
+            />
+            <Input
+              placeholder={'Enter Price'}
+              titleInput={'Product Price'}
+              value={price}
+              onChangeText={text => setPrice(text)}
             />
           </View>
           <TouchableOpacity style={styles.addicon} onPress={getpick}>

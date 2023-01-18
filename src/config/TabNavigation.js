@@ -20,7 +20,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Home from '../Screens/Home/Home';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 const Null = () => {
   return <></>;
 };
@@ -56,7 +56,7 @@ const TabNavigation = ({state, descriptors, navigation}) => {
           <TouchableOpacity
             // onPress={() => props.navigation.navigate('SearchProperty')}
             onPress={() => props.navigation.navigate('Cart')}>
-            <AntDesign name="shoppingcart" size={30} color={'#b7b7b7'} />
+            <FontAwesome5 name="box" size={25} color={'#b7b7b7'} />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -77,8 +77,8 @@ const TabNavigation = ({state, descriptors, navigation}) => {
               style={{alignSelf: 'center'}}></Entypo>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate('Notification')}>
-            <Bellicon />
+            onPress={() => props.navigation.navigate('MyOrders')}>
+            <AntDesign name="shoppingcart" size={30} color={'#b7b7b7'} />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => props.navigation.navigate('Profile')}>

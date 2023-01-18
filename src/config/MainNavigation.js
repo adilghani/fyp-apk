@@ -18,6 +18,9 @@ import Sinup from '../Screens/Signup/Signup';
 import Wellcome from '../Screens/Wellcome/Wellcome';
 import TabNavigation from './TabNavigation';
 import AdminProfile from '../AdminPanel/AdminProfile/AdminProfile';
+import OrderDetail from '../Screens/MyOrders/orderDetail';
+import Adminorders from '../AdminPanel/Screens/AdminOrders/Adminorders';
+import MyOrders from '../AdminPanel/Screens/MyOrders/MyOrders';
 
 const MainNavigation = () => {
   const Stack = createStackNavigator();
@@ -103,6 +106,22 @@ const MainNavigation = () => {
         <Stack.Screen
           component={AdminProfile}
           name="AdminProfile"
+          options={{headerShown: false}}
+        />
+
+        <Stack.Screen
+          component={OrderDetail}
+          name="OrderDetail"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={Adminorders}
+          name="Adminorders"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={MyOrders}
+          name="MyOrders"
           options={{headerShown: false}}
         />
       </Stack.Navigator>

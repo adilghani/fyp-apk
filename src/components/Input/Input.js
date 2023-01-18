@@ -19,6 +19,7 @@ const Input = ({
   value,
   onChangeText,
   secureTextEntry,
+  keyboardType,
 }) => {
   return (
     <View style={{marginBottom: 15}}>
@@ -37,6 +38,7 @@ const Input = ({
         placeholder={placeholder}
         secureTextEntry={secureTextEntry}
         placeholderTextColor={inputtitlecolor}
+        keyboardType={keyboardType}
         style={{
           width: Dimensions.get('screen').width / 1.1,
           height: 60,
