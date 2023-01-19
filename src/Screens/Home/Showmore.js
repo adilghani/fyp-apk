@@ -19,8 +19,9 @@ import {Dimensions} from 'react-native';
 import storage from '@react-native-firebase/storage';
 import {firebase} from '@react-native-firebase/firestore';
 import {useFocusEffect} from '@react-navigation/native';
+import WhiteLeft from '../../../assets/images/WhiteLeft';
 
-const Home = props => {
+const Showmore = props => {
   const [message, setMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [whatopen, setwhatopen] = React.useState('');
@@ -206,47 +207,44 @@ const Home = props => {
           </View>
         </View>
       </Dialog.Container>
-      <ImageBackground
-        source={require('../../components/assets/mainimge.jpg')}
-        style={{width: '100%', height: 200}}
-        imageStyle={{resizeMode: 'cover'}}></ImageBackground>
-      <View style={styles.catcon}>
-        <Text style={styles.cattitle}>Products</Text>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Showmore')}>
-          <Text style={styles.shopmore}>SHOP MORE</Text>
+      <View style={styles.catcon1}>
+        <TouchableOpacity
+          style={{marginHorizontal: 20}}
+          onPress={() => props.navigation.navigate('TabNavigation')}>
+          <WhiteLeft />
         </TouchableOpacity>
+        <Text style={styles.cattitle1}>All Products</Text>
       </View>
-      <ScrollView horizontal>
+
+      <ScrollView>
         {data == undefined ? null : (
-          <View style={{marginTop: 20}}>
+          <View style={{marginTop: 20, alignSelf: 'center'}}>
             <FlatList
               contentContainerStyle={{paddingBottom: 70}}
-              numColumns={3}
+              numColumns={2}
               data={data}
               renderItem={({item, index}) => {
                 console.log('item', item);
                 return (
                   <View>
-                    {index == 0 ||
-                    index == 1 ||
-                    index == 2 ||
-                    index == 3 ||
-                    index == 4 ||
-                    index == 5 ? (
-                      <TouchableOpacity
-                        style={styles.cardcon}
-                        onPress={() =>
-                          props.navigation.navigate('ViewDetailProduct', {
-                            item: item,
-                          })
-                        }>
-                        <Image
-                          source={{uri: item.productImage}}
-                          style={{width: 90, height: 120}}
-                        />
-                        <Text style={styles.name}>{item.PrductName}</Text>
-                      </TouchableOpacity>
-                    ) : null}
+                    <TouchableOpacity
+                      style={[
+                        styles.cardcon,
+                        {
+                          width: Dimensions.get('screen').width / 2.5,
+                        },
+                      ]}
+                      onPress={() =>
+                        props.navigation.navigate('ViewDetailProduct', {
+                          item: item,
+                        })
+                      }>
+                      <Image
+                        source={{uri: item.productImage}}
+                        style={{width: 90, height: 120}}
+                      />
+                      <Text style={styles.name}>{item.PrductName}</Text>
+                    </TouchableOpacity>
                   </View>
                 );
               }}
@@ -257,4 +255,4 @@ const Home = props => {
     </View>
   );
 };
-export default Home;
+export default Showmore;

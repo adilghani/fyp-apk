@@ -15,7 +15,7 @@ const Wellcome = props => {
     setTimeout(async () => {
       try {
         const role = await AsyncStorage.getItem('role');
-        console.log('role', role.toString());
+        console.log('role', role);
         if (role === 'user') {
           props.navigation.replace('TabNavigation');
         } else if (role === 'admin') {

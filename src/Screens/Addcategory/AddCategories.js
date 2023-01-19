@@ -25,6 +25,8 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {Image} from 'react-native';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
+import WhiteLeft from '../../../assets/images/WhiteLeft';
+import {StatusBar} from 'react-native';
 const AdminAddCategories = props => {
   const [userid, setuserid] = React.useState('');
   const [Restorentname, setRestorentname] = React.useState();
@@ -138,6 +140,7 @@ const AdminAddCategories = props => {
 
   return (
     <View style={styles.main}>
+      <StatusBar barStyle={'light-content'} backgroundColor={primary} />
       <Modal
         isVisible={loading}
         style={{
@@ -166,7 +169,7 @@ const AdminAddCategories = props => {
           width: Dimensions.get('screen').width / 1.1,
         }}>
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          <Danger />
+          {whatopen == 'done' ? null : <Danger />}
           <View style={styles.cancelcon}>
             <Text style={styles.canceltilte}>
               {' '}
@@ -198,12 +201,13 @@ const AdminAddCategories = props => {
           </View>
         </View>
       </Dialog.Container>
-      <View style={styles.headercon}>
+      <View style={styles.catcon}>
         <TouchableOpacity
+          style={{marginHorizontal: 20}}
           onPress={() => props.navigation.navigate('TabNavigation')}>
-          <Right />
+          <WhiteLeft />
         </TouchableOpacity>
-        <Text style={styles.addtitle}>Add Product</Text>
+        <Text style={styles.cattitle}>Add Product</Text>
       </View>
       <View style={{flex: 1}}>
         <ScrollView>
@@ -239,6 +243,7 @@ const AdminAddCategories = props => {
               titleInput={'Product Price'}
               value={price}
               onChangeText={text => setPrice(text)}
+              keyboardType={'number-pad'}
             />
           </View>
           <TouchableOpacity style={styles.addicon} onPress={getpick}>
@@ -261,10 +266,10 @@ const AdminAddCategories = props => {
               />
             </View>
           )}
+          <View style={{marginTop: 20, alignSelf: 'center'}}>
+            <Button ButtonTitle={'Submit'} onPress={submitdata} />
+          </View>
         </ScrollView>
-      </View>
-      <View style={{position: 'absolute', bottom: 10, alignSelf: 'center'}}>
-        <Button ButtonTitle={'Submit'} onPress={submitdata} />
       </View>
     </View>
   );

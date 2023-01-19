@@ -1,11 +1,36 @@
 import {Dimensions, StyleSheet} from 'react-native';
-import {WhiteColor, maintitle, Darkcolor} from '../../Utils/ColorScheme/Colors';
+import {
+  WhiteColor,
+  maintitle,
+  Darkcolor,
+  primary,
+} from '../../Utils/ColorScheme/Colors';
 import {Medium, SemiBold} from '../../Utils/FontFamily/Fonfamily';
 
 const styles = StyleSheet.create({
   main: {
     flex: 1,
     backgroundColor: WhiteColor,
+  },
+  catcon1: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: primary,
+    height: 70,
+    width: '100%',
+  },
+  cattitle1: {
+    fontSize: 20,
+    fontFamily: SemiBold,
+    color: WhiteColor,
+    textAlign: 'center',
+    alignSelf: 'center',
+    position: 'absolute',
+    justifyContent: 'center',
+    left: 0,
+    right: 0,
+    zIndex: -2000,
   },
   catcon: {
     flexDirection: 'row',

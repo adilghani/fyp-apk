@@ -11,12 +11,17 @@ import LeftIconForWhite from '../../../../../assets/images/LeftIconforWhite';
 import styles from './style';
 import storage from '@react-native-firebase/storage';
 import {Alert} from 'react-native';
-import {primary, WhiteColor} from '../../../../Utils/ColorScheme/Colors';
+import {
+  maintitle,
+  primary,
+  WhiteColor,
+} from '../../../../Utils/ColorScheme/Colors';
 import Modal from 'react-native-modal';
 import Spinner from 'react-native-spinkit';
 import Dialog from 'react-native-dialog';
 import {Dimensions} from 'react-native';
 import Danger from '../../../../../assets/images/Danger';
+import {SemiBold} from '../../../../Utils/FontFamily/Fonfamily';
 const AdminViewDetailProduct = props => {
   const {item} = props.route.params;
   const [message, setMessage] = React.useState('');
@@ -27,7 +32,7 @@ const AdminViewDetailProduct = props => {
   const [data, setuserData] = React.useState([]);
   const [productsname, setProductName] = React.useState([]);
   const [userid, setuserid] = React.useState();
-  console.log('Data', item);
+  console.log('Data', item.ProductID);
   const Delete = () => {
     setLoading(true);
     console.log('itemid', item?.id);
@@ -129,7 +134,7 @@ const AdminViewDetailProduct = props => {
             <TouchableOpacity
               onPress={() => {
                 whatopen == 'done'
-                  ? props.navigation.navigate('AdminHome') &
+                  ? props.navigation.navigate('AdminTab') &
                     setdialogVisible(false)
                   : setdialogVisible(false);
               }}
@@ -153,25 +158,16 @@ const AdminViewDetailProduct = props => {
       <ImageBackground
         source={{uri: item?.productImage}}
         style={{width: '100%', height: 300, resizeMode: 'cover'}}>
-        <TouchableOpacity style={{marginTop: 20, marginHorizontal: 20}}>
+        <TouchableOpacity
+          style={{marginTop: 20, marginHorizontal: 20}}
+          onPress={() => props.navigation.navigate('AdminHome')}>
           <LeftIconForWhite />
         </TouchableOpacity>
       </ImageBackground>
       <View style={{marginTop: 20, marginHorizontal: 10}}>
         <Text style={styles.name}>{item.PrductName}</Text>
         <Text style={styles.price}> {item?.price}</Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            width: '100%',
-            marginTop: 20,
-            justifyContent: 'space-between',
-            marginHorizontal: 10,
-          }}>
-          <Text style={styles.tilespe}>Specification</Text>
-          <Text style={styles.banrd}>Brand,Display Type Box content</Text>
-        </View>
+
         <View
           style={{
             flexDirection: 'row',
@@ -179,9 +175,10 @@ const AdminViewDetailProduct = props => {
             alignItems: 'center',
             marginTop: 20,
             justifyContent: 'space-between',
+
             marginHorizontal: 10,
           }}>
-          <Text style={styles.tilespe}>Delivery</Text>
+          <Text style={styles.tilespe}>Pickup point </Text>
           <Text style={styles.banrd}>{item?.PickupPoint}</Text>
         </View>
         <View

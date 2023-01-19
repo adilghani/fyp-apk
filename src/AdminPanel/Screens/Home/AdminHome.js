@@ -199,9 +199,10 @@ const AdminHome = props => {
         source={require('../../../components/assets/mainimge.jpg')}
         style={{width: '100%', height: 200}}
         imageStyle={{resizeMode: 'cover'}}></ImageBackground>
-      <View style={styles.catcon}>
-        <Text style={styles.cattitle}>Products</Text>
-        <TouchableOpacity>
+      <View style={styles.catcon1}>
+        <Text style={styles.cattitle1}>Products</Text>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('AdminShowmore')}>
           <Text style={styles.shopmore}>SHOP MORE</Text>
         </TouchableOpacity>
       </View>
@@ -210,24 +211,33 @@ const AdminHome = props => {
           <View style={{marginTop: 20}}>
             <FlatList
               contentContainerStyle={{paddingBottom: 70}}
-              numColumns={5}
+              numColumns={3}
               data={data}
               renderItem={({item, index}) => {
                 console.log('item', item.id);
                 return (
-                  <TouchableOpacity
-                    style={styles.cardcon}
-                    onPress={() =>
-                      props.navigation.navigate('AdminViewDetailProduct', {
-                        item: item,
-                      })
-                    }>
-                    <Image
-                      source={{uri: item.productImage}}
-                      style={{width: 90, height: 120}}
-                    />
-                    <Text style={styles.name}>{item.PrductName}</Text>
-                  </TouchableOpacity>
+                  <View>
+                    {index == 0 ||
+                    index == 1 ||
+                    index == 2 ||
+                    index == 3 ||
+                    index == 4 ||
+                    index == 5 ? (
+                      <TouchableOpacity
+                        style={styles.cardcon}
+                        onPress={() =>
+                          props.navigation.navigate('AdminViewDetailProduct', {
+                            item: item,
+                          })
+                        }>
+                        <Image
+                          source={{uri: item.productImage}}
+                          style={{width: 90, height: 120}}
+                        />
+                        <Text style={styles.name}>{item.PrductName}</Text>
+                      </TouchableOpacity>
+                    ) : null}
+                  </View>
                 );
               }}
             />

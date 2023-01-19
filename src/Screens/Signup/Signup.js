@@ -12,6 +12,7 @@ import Spinner from 'react-native-spinkit';
 import Dialog from 'react-native-dialog';
 import Danger from '../../../assets/images/Danger';
 import auth from '@react-native-firebase/auth';
+import {firebase} from '@react-native-firebase/firestore';
 
 const Sinup = props => {
   const [dialogVisible, setdialogVisible] = React.useState(false);
@@ -32,6 +33,29 @@ const Sinup = props => {
         setdialogVisible(true);
         setMessage('User account created');
         setwhatopen('done');
+        firebase
+          .firestore()
+          .collection('Users')
+          .add({
+            useremail: data?.user?.email,
+            userid: data?.user?.uid,
+          })
+          .then(() => {
+            console.log('done');
+
+            // Alert.alert(
+            //   'Product Deleted',
+
+            // );
+          })
+          .catch(e => {
+            setLoading(false);
+
+            console.log('error while deleting', e);
+            setdialogVisible(true);
+            setMessage('Error while adding please try agian');
+            setwhatopen('notdone');
+          });
       })
       .catch(error => {
         setLoading(false);
@@ -86,9 +110,12 @@ const Sinup = props => {
           width: Dimensions.get('screen').width / 1.1,
         }}>
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          <Danger />
+          {whatopen == 'done' ? null : <Danger />}
           <View style={styles.cancelcon}>
-            <Text style={styles.canceltilte}>Error</Text>
+            <Text style={styles.canceltilte}>
+              {' '}
+              {whatopen == 'done' ? 'Success' : 'Error'}
+            </Text>
             <Text style={styles.canceldet}>{message}</Text>
           </View>
           <View style={styles.cancelbtncon}>

@@ -100,6 +100,7 @@ const AdminAddCategories = props => {
           productkey: 'adminproducts',
           productImage: imageuri,
           price: price,
+          ProductID: Math.random(),
         })
         .then(ref => {
           setLoading(false);
@@ -107,6 +108,11 @@ const AdminAddCategories = props => {
           setdialogVisible(true);
           setMessage('Product add Succefully ');
           setwhatopen('done');
+          setProductName();
+          setDescription();
+          setRestorentname();
+          setPrice();
+          setPrice();
         });
     }
   };
@@ -125,6 +131,12 @@ const AdminAddCategories = props => {
       const url = storageref.getDownloadURL();
       setLoading(false);
       setImage(null);
+      setProductName();
+      setDescription();
+      setRestorentname();
+      setPrice();
+      setPrice();
+
       return url;
     } catch (e) {
       setLoading(false);
@@ -167,9 +179,12 @@ const AdminAddCategories = props => {
           width: Dimensions.get('screen').width / 1.1,
         }}>
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          <Danger />
+          {whatopen == 'done' ? null : <Danger />}
+
           <View style={styles.cancelcon}>
-            <Text style={styles.canceltilte}>Error</Text>
+            <Text style={styles.canceltilte}>
+              {whatopen == 'done' ? 'Success' : 'Error'}
+            </Text>
             <Text style={styles.canceldet}>{message}</Text>
           </View>
           <View style={styles.cancelbtncon}>
@@ -198,8 +213,7 @@ const AdminAddCategories = props => {
         </View>
       </Dialog.Container>
       <View style={styles.headercon}>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('TabNavigation')}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('AdminTab')}>
           <Right />
         </TouchableOpacity>
         <Text style={styles.addtitle}>Add Product</Text>
@@ -238,6 +252,7 @@ const AdminAddCategories = props => {
               titleInput={'Product Price'}
               value={price}
               onChangeText={text => setPrice(text)}
+              keyboardType={'number-pad'}
             />
           </View>
           <TouchableOpacity style={styles.addicon} onPress={getpick}>
@@ -260,10 +275,10 @@ const AdminAddCategories = props => {
               />
             </View>
           )}
+          <View style={{alignSelf: 'center', marginTop: 20}}>
+            <Button ButtonTitle={'Submit'} onPress={submitdata} />
+          </View>
         </ScrollView>
-      </View>
-      <View style={{position: 'absolute', bottom: 10, alignSelf: 'center'}}>
-        <Button ButtonTitle={'Submit'} onPress={submitdata} />
       </View>
     </View>
   );

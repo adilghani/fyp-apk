@@ -11,18 +11,70 @@ import {
 import LeftICon from '../../../assets/images/Lefticon';
 import Right from '../../../assets/images/Right';
 import {save_role} from '../../Screens/Login/Login';
-import {maintitle} from '../../Utils/ColorScheme/Colors';
+import {maintitle, primary, WhiteColor} from '../../Utils/ColorScheme/Colors';
 import {Medium} from '../../Utils/FontFamily/Fonfamily';
 import styles from './style';
 import auth from '@react-native-firebase/auth';
+import {getAuth} from '@react-native-firebase/auth';
+import {firebase} from '@react-native-firebase/firestore';
+import {Dimensions} from 'react-native';
+import Modal from 'react-native-modal';
+import Spinner from 'react-native-spinkit';
+import Dialog from 'react-native-dialog';
+import Danger from '../../../assets/images/Danger';
+import TrashIcon from '../../../assets/images/TrashIcon';
 
 const AdminProfile = props => {
   const [useremail, setuseremail] = React.useState();
+  const [allusers, setAllusers] = React.useState();
+  const [dialogVisible, setdialogVisible] = React.useState(false);
+  const [message, setMessage] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const [whatopen, setwhatopen] = React.useState('');
   const logout = async () => {
     const value = await save_role('null');
     await AsyncStorage.removeItem('id');
     props.navigation.navigate('Login');
   };
+  const getallusers = async () => {
+    setLoading(true);
+    await firebase
+      .firestore()
+      .collection('Users')
+      .get()
+      // firebase
+      //   .firestore()
+      //   .collection('Products')
+      //   .get()
+      .then(querySnapshot => {
+        const arr = [];
+
+        querySnapshot.forEach(snapshot => {
+          let data = snapshot.data();
+          data.id = snapshot.id;
+          console.log('userdata', snapshot.data());
+
+          arr.push(data);
+          // pro.push(data.PrductName);
+        });
+        setAllusers(arr);
+      })
+      .catch(e => {
+        setdialogVisible(true);
+        setMessage('Some thing went wrong');
+        setLoading(false);
+        setwhatopen('notdone');
+      });
+
+    // await familyregister();
+    // const url = await storage().ref('adminproducts').getDownloadURL();
+    // console.log(url);
+    setLoading(false);
+    // setimage(url);
+  };
+  React.useEffect(() => {
+    getallusers();
+  }, []);
   const getusername = async () => {
     const getid = await AsyncStorage.getItem('userdate');
     console.log('getid', getid);
@@ -66,20 +118,71 @@ const AdminProfile = props => {
       name: 'GBS Test',
     },
   ];
-  const getAllUsers = (req, res) => {
-    const maxResults = 1; // optional arg.
 
-    auth
-      .listUsers(maxResults)
-      .then(userRecords => {
-        userRecords.users.forEach(user => console.log(user.toJSON()));
-        res.end('Retrieved users list successfully.');
-      })
-      .catch(error => console.log(error));
-  };
   return (
     <View style={styles.main}>
       <ScrollView showsVerticalScrollIndicator={false}>
+        <Modal
+          isVisible={loading}
+          style={{
+            flex: 1,
+            margin: 0,
+            // height: height,
+            // width: width,
+            backgroundColor: 'transparent',
+          }}>
+          <View
+            style={{
+              flex: 1,
+              margin: 0,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'transparent',
+            }}>
+            <Spinner type="ThreeBounce" size={50} color={primary} />
+          </View>
+        </Modal>
+        <Dialog.Container
+          visible={dialogVisible}
+          contentStyle={{
+            borderRadius: 10,
+            backgroundColor: WhiteColor,
+            width: Dimensions.get('screen').width / 1.1,
+          }}>
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Danger />
+            <View style={styles.cancelcon}>
+              <Text style={styles.canceltilte}>
+                {' '}
+                {whatopen == 'done' ? 'Success' : 'Error'}
+              </Text>
+              <Text style={styles.canceldet}>{message}</Text>
+            </View>
+            <View style={styles.cancelbtncon}>
+              <TouchableOpacity
+                onPress={() => {
+                  whatopen == 'done'
+                    ? props.navigation.navigate('Home') &
+                      setdialogVisible(false)
+                    : setdialogVisible(false);
+                }}
+                style={[
+                  styles.cancelbtn,
+                  {
+                    borderWidth: 2,
+                    borderColor: primary,
+                    backgroundColor: primary,
+                    marginLeft: 15,
+                    marginTop: 30,
+                  },
+                ]}>
+                <Text style={[styles.cancelbtntitle, {color: WhiteColor}]}>
+                  {whatopen == 'done' ? 'Continue' : 'Try Again'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Dialog.Container>
         <View
           style={{
             flexDirection: 'row',
@@ -87,7 +190,8 @@ const AdminProfile = props => {
             marginHorizontal: 10,
             marginTop: 20,
           }}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('AdminTab')}>
             <Right />
           </TouchableOpacity>
 
@@ -110,17 +214,15 @@ const AdminProfile = props => {
         </View>
         <View style={styles.cardcon}>
           <FlatList
-            data={Tabs}
+            data={allusers}
             renderItem={({item, index}) => {
               return (
-                <TouchableOpacity
-                  style={styles.persolacon}
-                  onPress={() =>
-                    props.navigation.navigate('ViewProfile', {item: item})
-                  }>
-                  <Text style={styles.persolaltitle}>{item.name}</Text>
-                  <LeftICon />
-                </TouchableOpacity>
+                <View style={styles.persolacon}>
+                  <Text style={styles.persolaltitle}>{item?.useremail}</Text>
+                  {/* <TouchableOpacity>
+                    <TrashIcon />
+                  </TouchableOpacity> */}
+                </View>
               );
             }}
           />

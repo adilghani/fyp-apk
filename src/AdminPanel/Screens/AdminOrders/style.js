@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     left: 0,
     right: 0,
+    zIndex: -2000,
   },
   shopmore: {
     fontSize: 16,

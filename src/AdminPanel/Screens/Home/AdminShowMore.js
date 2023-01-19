@@ -13,14 +13,15 @@ import styles from './style';
 import Modal from 'react-native-modal';
 import Spinner from 'react-native-spinkit';
 import Dialog from 'react-native-dialog';
-import Danger from '../../../assets/images/Danger';
-import {primary, WhiteColor} from '../../Utils/ColorScheme/Colors';
+import Danger from '../../../../assets/images/Danger';
+import {primary, WhiteColor} from '../../../Utils/ColorScheme/Colors';
 import {Dimensions} from 'react-native';
 import storage from '@react-native-firebase/storage';
 import {firebase} from '@react-native-firebase/firestore';
 import {useFocusEffect} from '@react-navigation/native';
+import WhiteLeft from '../../../../assets/images/WhiteLeft';
 
-const Home = props => {
+const AdminShowmore = props => {
   const [message, setMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [whatopen, setwhatopen] = React.useState('');
@@ -31,15 +32,7 @@ const Home = props => {
 
   console.log('data', productsname);
   const familyregister = async () => {
-    const imagearr = [];
-
-    for (const v of productsname) {
-      const url = await storage().ref(v.toString()).getDownloadURL();
-      imagearr.push(url);
-
-      // const blockresult = await setData(v, );
-    }
-    console.log('VVVVVVVV', imagearr);
+    const uid = auth().currentUser.uid;
   };
   const getImage = async () => {
     setLoading(true);
@@ -57,7 +50,7 @@ const Home = props => {
         querySnapshot.forEach(snapshot => {
           let data = snapshot.data();
           data.id = snapshot.id;
-          console.log('userdata', snapshot.data());
+          console.log('userdata', data.id);
 
           arr.push(data);
           // pro.push(data.PrductName);
@@ -74,6 +67,68 @@ const Home = props => {
   React.useEffect(() => {
     getImage();
   }, []);
+  const cat = [
+    {
+      name: 'Wireless Earbuds',
+      img: require('../../../components/assets/1.jpg'),
+    },
+    {
+      name: 'Sports',
+      img: require('../../../components/assets/2.jpg'),
+    },
+    {
+      name: 'Hats & Caps',
+      img: require('../../../components/assets/3.jpg'),
+    },
+    {
+      name: 'Cables convert',
+      img: require('../../../components/assets/2.jpg'),
+    },
+    {
+      name: 'Cables convert',
+      img: require('../../../components/assets/1.jpg'),
+    },
+    {
+      name: 'Hats & Caps',
+      img: require('../../../components/assets/2.jpg'),
+    },
+    {
+      name: 'Cables convert',
+      img: require('../../../components/assets/3.jpg'),
+    },
+    {
+      name: 'Cables convert',
+      img: require('../../../components/assets/1.jpg'),
+    },
+    {
+      name: 'Cables convert',
+      img: require('../../../components/assets/1.jpg'),
+    },
+    {
+      name: 'Cables convert',
+      img: require('../../../components/assets/1.jpg'),
+    },
+    {
+      name: 'Hats & Caps',
+      img: require('../../../components/assets/2.jpg'),
+    },
+    {
+      name: 'Cables convert',
+      img: require('../../../components/assets/3.jpg'),
+    },
+    {
+      name: 'Cables convert',
+      img: require('../../../components/assets/1.jpg'),
+    },
+    {
+      name: 'Cables convert',
+      img: require('../../../components/assets/1.jpg'),
+    },
+    {
+      name: 'Cables convert',
+      img: require('../../../components/assets/1.jpg'),
+    },
+  ];
   useFocusEffect(
     React.useCallback(() => {
       getImage();
@@ -81,68 +136,6 @@ const Home = props => {
       // return () => unsubscribe();
     }, []),
   );
-  // const cat = [
-  //   {
-  //     name: 'Wireless Earbuds',
-  //     img: require('../../../components/assets/1.jpg'),
-  //   },
-  //   {
-  //     name: 'Sports',
-  //     img: require('../../../components/assets/2.jpg'),
-  //   },
-  //   {
-  //     name: 'Hats & Caps',
-  //     img: require('../../../components/assets/3.jpg'),
-  //   },
-  //   {
-  //     name: 'Cables convert',
-  //     img: require('../../../components/assets/2.jpg'),
-  //   },
-  //   {
-  //     name: 'Cables convert',
-  //     img: require('../../../components/assets/1.jpg'),
-  //   },
-  //   {
-  //     name: 'Hats & Caps',
-  //     img: require('../../../components/assets/2.jpg'),
-  //   },
-  //   {
-  //     name: 'Cables convert',
-  //     img: require('../../../components/assets/3.jpg'),
-  //   },
-  //   {
-  //     name: 'Cables convert',
-  //     img: require('../../../components/assets/1.jpg'),
-  //   },
-  //   {
-  //     name: 'Cables convert',
-  //     img: require('../../../components/assets/1.jpg'),
-  //   },
-  //   {
-  //     name: 'Cables convert',
-  //     img: require('../../../components/assets/1.jpg'),
-  //   },
-  //   {
-  //     name: 'Hats & Caps',
-  //     img: require('../../../components/assets/2.jpg'),
-  //   },
-  //   {
-  //     name: 'Cables convert',
-  //     img: require('../../../components/assets/3.jpg'),
-  //   },
-  //   {
-  //     name: 'Cables convert',
-  //     img: require('../../../components/assets/1.jpg'),
-  //   },
-  //   {
-  //     name: 'Cables convert',
-  //     img: require('../../../components/assets/1.jpg'),
-  //   },
-  //   {
-  //     name: 'Cables convert',
-  //     img: require('../../../components/assets/1.jpg'),
-  //   },
-  // ];
   return (
     <View style={styles.main}>
       <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
@@ -176,17 +169,14 @@ const Home = props => {
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <Danger />
           <View style={styles.cancelcon}>
-            <Text style={styles.canceltilte}>
-              {' '}
-              {whatopen == 'done' ? 'Success' : 'Error'}
-            </Text>
+            <Text style={styles.canceltilte}>Error</Text>
             <Text style={styles.canceldet}>{message}</Text>
           </View>
           <View style={styles.cancelbtncon}>
             <TouchableOpacity
               onPress={() => {
                 whatopen == 'done'
-                  ? props.navigation.navigate('Home') & setdialogVisible(false)
+                  ? props.navigation.navigate('Login') & setdialogVisible(false)
                   : setdialogVisible(false);
               }}
               style={[
@@ -206,47 +196,43 @@ const Home = props => {
           </View>
         </View>
       </Dialog.Container>
-      <ImageBackground
-        source={require('../../components/assets/mainimge.jpg')}
-        style={{width: '100%', height: 200}}
-        imageStyle={{resizeMode: 'cover'}}></ImageBackground>
       <View style={styles.catcon}>
-        <Text style={styles.cattitle}>Products</Text>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Showmore')}>
-          <Text style={styles.shopmore}>SHOP MORE</Text>
+        <TouchableOpacity
+          style={{marginHorizontal: 20}}
+          onPress={() => props.navigation.navigate('AdminTab')}>
+          <WhiteLeft />
         </TouchableOpacity>
+        <Text style={styles.cattitle}>All Products</Text>
       </View>
-      <ScrollView horizontal>
+      <ScrollView>
         {data == undefined ? null : (
-          <View style={{marginTop: 20}}>
+          <View style={{marginTop: 20, alignSelf: 'center'}}>
             <FlatList
               contentContainerStyle={{paddingBottom: 70}}
-              numColumns={3}
+              numColumns={2}
               data={data}
               renderItem={({item, index}) => {
-                console.log('item', item);
+                console.log('item', item.id);
                 return (
                   <View>
-                    {index == 0 ||
-                    index == 1 ||
-                    index == 2 ||
-                    index == 3 ||
-                    index == 4 ||
-                    index == 5 ? (
-                      <TouchableOpacity
-                        style={styles.cardcon}
-                        onPress={() =>
-                          props.navigation.navigate('ViewDetailProduct', {
-                            item: item,
-                          })
-                        }>
-                        <Image
-                          source={{uri: item.productImage}}
-                          style={{width: 90, height: 120}}
-                        />
-                        <Text style={styles.name}>{item.PrductName}</Text>
-                      </TouchableOpacity>
-                    ) : null}
+                    <TouchableOpacity
+                      style={[
+                        styles.cardcon,
+                        {
+                          width: Dimensions.get('screen').width / 2.5,
+                        },
+                      ]}
+                      onPress={() =>
+                        props.navigation.navigate('AdminViewDetailProduct', {
+                          item: item,
+                        })
+                      }>
+                      <Image
+                        source={{uri: item.productImage}}
+                        style={{width: 90, height: 120}}
+                      />
+                      <Text style={styles.name}>{item.PrductName}</Text>
+                    </TouchableOpacity>
                   </View>
                 );
               }}
@@ -257,4 +243,4 @@ const Home = props => {
     </View>
   );
 };
-export default Home;
+export default AdminShowmore;

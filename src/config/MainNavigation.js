@@ -18,9 +18,13 @@ import Sinup from '../Screens/Signup/Signup';
 import Wellcome from '../Screens/Wellcome/Wellcome';
 import TabNavigation from './TabNavigation';
 import AdminProfile from '../AdminPanel/AdminProfile/AdminProfile';
-import OrderDetail from '../Screens/MyOrders/orderDetail';
 import Adminorders from '../AdminPanel/Screens/AdminOrders/Adminorders';
-import MyOrders from '../AdminPanel/Screens/MyOrders/MyOrders';
+import MyOrders from '../Screens/MyOrders/MyOrders';
+import OrderDetail from '../Screens/MyOrders/orderDetail';
+
+import AdminOrderDetail from '../AdminPanel/Screens/AdminOrders/AdminorderDetail';
+import AdminShowmore from '../AdminPanel/Screens/Home/AdminShowMore';
+import Showmore from '../Screens/Home/Showmore';
 
 const MainNavigation = () => {
   const Stack = createStackNavigator();
@@ -110,6 +114,11 @@ const MainNavigation = () => {
         />
 
         <Stack.Screen
+          component={AdminOrderDetail}
+          name="AdminOrderDetail"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
           component={OrderDetail}
           name="OrderDetail"
           options={{headerShown: false}}
@@ -122,6 +131,16 @@ const MainNavigation = () => {
         <Stack.Screen
           component={MyOrders}
           name="MyOrders"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={AdminShowmore}
+          name="AdminShowmore"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={Showmore}
+          name="Showmore"
           options={{headerShown: false}}
         />
       </Stack.Navigator>

@@ -19,6 +19,7 @@ import {Dimensions} from 'react-native';
 import storage from '@react-native-firebase/storage';
 import {firebase} from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import WhiteLeft from '../../../assets/images/WhiteLeft';
 
 const Cart = props => {
   const [message, setMessage] = React.useState('');
@@ -144,7 +145,8 @@ const Cart = props => {
   // ];
   return (
     <View style={styles.main}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
+      <StatusBar barStyle={'light-content'} backgroundColor={primary} />
+
       <Modal
         isVisible={loading}
         style={{
@@ -207,6 +209,11 @@ const Cart = props => {
       </Dialog.Container>
 
       <View style={styles.catcon}>
+        <TouchableOpacity
+          style={{marginHorizontal: 20}}
+          onPress={() => props.navigation.navigate('TabNavigation')}>
+          <WhiteLeft />
+        </TouchableOpacity>
         <Text style={styles.cattitle}> MY Products</Text>
       </View>
       <ScrollView>

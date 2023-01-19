@@ -50,7 +50,8 @@ const AdminTab = ({state, descriptors, navigation}) => {
             alignItems: 'center',
             paddingHorizontal: 30,
           }}>
-          <TouchableOpacity onPress={() => props.navigation.navigate('Home')}>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('AdminHome')}>
             {/* <MaterialCommunityIcons name="home" color={'white'} size={30} /> */}
             <HomeDark />
           </TouchableOpacity>

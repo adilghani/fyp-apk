@@ -1,18 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
+import {StatusBar} from 'react-native';
 import {ImageBackground} from 'react-native';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import LeftIconForWhite from '../../../assets/images/LeftIconforWhite';
+import WhiteLeft from '../../../assets/images/WhiteLeft';
 import {primary, WhiteColor} from '../../Utils/ColorScheme/Colors';
-import Modal from 'react-native-modal';
-import Spinner from 'react-native-spinkit';
-import Dialog from 'react-native-dialog';
-import Input from '../../components/Input/Input';
-import {Dimensions} from 'react-native';
-import Button from '../../components/Button/Button';
-import Close from '../../../assets/images/Close';
-import Danger from '../../../assets/images/Danger';
-import {firebase} from '@react-native-firebase/firestore';
+import {SemiBold} from '../../Utils/FontFamily/Fonfamily';
 import styles from './orderdetailstyle';
 
 const OrderDetail = props => {
@@ -38,13 +32,39 @@ const OrderDetail = props => {
 
   return (
     <View style={styles.main}>
+      <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
+
       <ImageBackground
         source={{uri: item?.productImage}}
         style={{width: '100%', height: 300, resizeMode: 'cover'}}>
-        <TouchableOpacity style={{marginTop: 20, marginHorizontal: 20}}>
-          <LeftIconForWhite />
-        </TouchableOpacity>
+        <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.2)'}}>
+          <TouchableOpacity
+            style={{marginTop: 20, marginHorizontal: 20}}
+            onPress={() => props.navigation.navigate('MyOrders')}>
+            <WhiteLeft />
+          </TouchableOpacity>
+        </View>
       </ImageBackground>
+      {/* <Image
+          source={require('../../../../components/assets/barcode.jpg')}
+          style={{width: 'auto', height: 70, resizeMode: 'contain'}}
+        /> */}
+      <View
+        style={{
+          height: 60,
+          width: '60%',
+          justifyContent: 'center',
+          padding: 10,
+          backgroundColor: primary,
+          marginBottom: 10,
+          marginHorizontal: 10,
+          marginTop: 20,
+        }}>
+        <Text style={{fontSize: 16, fontFamily: SemiBold, color: WhiteColor}}>
+          #{item?.ProductID.toPrecision(7)}
+          {/* {Math.round(item?.ProductID)} */}
+        </Text>
+      </View>
       <View style={{marginTop: 20, marginHorizontal: 10}}>
         <Text style={styles.name}>{item.PrductName}</Text>
         <Text style={styles.price}> {item?.price}</Text>

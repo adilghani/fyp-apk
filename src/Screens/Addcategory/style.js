@@ -78,5 +78,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: Medium,
   },
+  catcon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: primary,
+    height: 70,
+    width: '100%',
+  },
+  cattitle: {
+    fontSize: 20,
+    fontFamily: SemiBold,
+    color: WhiteColor,
+    textAlign: 'center',
+    alignSelf: 'center',
+    position: 'absolute',
+    justifyContent: 'center',
+    left: 0,
+    right: 0,
+    zIndex: -2000,
+  },
 });
 export default styles;

@@ -19,6 +19,8 @@ import {Dimensions} from 'react-native';
 import storage from '@react-native-firebase/storage';
 import {firebase} from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LeftIconForWhite from '../../../../assets/images/LeftIconforWhite';
+import WhiteLeft from '../../../../assets/images/WhiteLeft';
 
 const Adminorders = props => {
   const [message, setMessage] = React.useState('');
@@ -203,6 +205,11 @@ const Adminorders = props => {
       </Dialog.Container>
 
       <View style={styles.catcon}>
+        <TouchableOpacity
+          style={{marginHorizontal: 20}}
+          onPress={() => props.navigation.navigate('AdminTab')}>
+          <WhiteLeft />
+        </TouchableOpacity>
         <Text style={styles.cattitle}>All Orders</Text>
       </View>
       <ScrollView>
@@ -224,7 +231,7 @@ const Adminorders = props => {
                   <TouchableOpacity
                     style={styles.cardcon}
                     onPress={() =>
-                      props.navigation.navigate('OrderDetail', {
+                      props.navigation.navigate('AdminOrderDetail', {
                         item: item,
                       })
                     }>

@@ -28,9 +28,9 @@ const ViewDetailProduct = props => {
   const [whatopen, setwhatopen] = React.useState('');
   const [delievrypoint, setDeleiveryPoinr] = React.useState();
   const {item} = props.route.params;
+  console.log('getid', item?.id);
   const getadminid = async () => {
     const getid = await AsyncStorage.getItem('id');
-    console.log('getid', getid + ' ' + item?.userid);
     setuserid(getid);
   };
   React.useEffect(() => {
@@ -64,6 +64,7 @@ const ViewDetailProduct = props => {
           productImage: item?.productImage,
           price: item?.price,
           submittime: Date.now(),
+          ProductID: Math.random(),
         })
         .then(ref => {
           setLoading(false);
@@ -243,7 +244,9 @@ const ViewDetailProduct = props => {
       <ImageBackground
         source={{uri: item?.productImage}}
         style={{width: '100%', height: 300, resizeMode: 'cover'}}>
-        <TouchableOpacity style={{marginTop: 20, marginHorizontal: 20}}>
+        <TouchableOpacity
+          style={{marginTop: 20, marginHorizontal: 20}}
+          onPress={() => props.navigation.navigate('TabNavigation')}>
           <LeftIconForWhite />
         </TouchableOpacity>
       </ImageBackground>
