@@ -78,6 +78,19 @@ const OrderDetail = props => {
 
             marginHorizontal: 10,
           }}>
+          <Text style={styles.tilespe}>Order Quantity</Text>
+          <Text style={styles.banrd}>{item?.orderqty}</Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            width: '100%',
+            alignItems: 'center',
+            marginTop: 20,
+            justifyContent: 'space-between',
+
+            marginHorizontal: 10,
+          }}>
           <Text style={styles.tilespe}>My Name </Text>
           <Text style={styles.banrd}>{item?.username}</Text>
         </View>

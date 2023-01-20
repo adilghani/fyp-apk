@@ -27,10 +27,11 @@ const ViewDetailProduct = props => {
   const [message, setMessage] = React.useState('');
   const [whatopen, setwhatopen] = React.useState('');
   const [delievrypoint, setDeleiveryPoinr] = React.useState();
+  const [orderqty, setorderqty] = React.useState();
   const {item} = props.route.params;
-  console.log('getid', item?.id);
   const getadminid = async () => {
     const getid = await AsyncStorage.getItem('id');
+    console.log('getid', getid);
     setuserid(getid);
   };
   React.useEffect(() => {
@@ -60,6 +61,7 @@ const ViewDetailProduct = props => {
           deleiveryAddress: delievrypoint,
           username: name,
           contectname: contect,
+          orderqty: orderqty,
 
           productImage: item?.productImage,
           price: item?.price,
@@ -188,6 +190,13 @@ const ViewDetailProduct = props => {
             value={contect}
             onChangeText={text => setcontect(text)}
           />
+          <Input
+            placeholder={'Product Quantity'}
+            titleInput={'Quantity '}
+            keyboardType={'number-pad'}
+            value={orderqty}
+            onChangeText={text => setorderqty(text)}
+          />
           <View style={{marginTop: 30}}>
             <Button ButtonTitle={'Submit'} onPress={submitdata} />
           </View>
@@ -293,7 +302,11 @@ const ViewDetailProduct = props => {
             {backgroundColor: userid == item.userid ? 'red' : primary},
           ]}
           onPress={() => {
-            userid == item.userid ? Delete() : setdialogVisible(true);
+            userid == item.userid
+              ? Delete()
+              : userid == null
+              ? props.navigation.replace('Login')
+              : setdialogVisible(true);
           }}>
           <Text style={styles.btntitle}>
             {userid == item.userid ? 'Delete' : 'Order Now'}

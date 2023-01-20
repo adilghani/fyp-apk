@@ -21,7 +21,7 @@ const Wellcome = props => {
         } else if (role === 'admin') {
           props.navigation.replace('AdminTab');
         } else {
-          props.navigation.replace('Login');
+          props.navigation.replace('GuestHome');
         }
       } catch (error) {
         console.log(error);

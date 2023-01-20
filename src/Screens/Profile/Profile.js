@@ -20,7 +20,7 @@ const Profile = props => {
   const logout = async () => {
     const value = await save_role('null');
     await AsyncStorage.removeItem('id');
-    props.navigation.navigate('Login');
+    props.navigation.navigate('GuestHome');
   };
   const Tabs = [
     // {

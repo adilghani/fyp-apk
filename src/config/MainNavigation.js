@@ -25,6 +25,7 @@ import OrderDetail from '../Screens/MyOrders/orderDetail';
 import AdminOrderDetail from '../AdminPanel/Screens/AdminOrders/AdminorderDetail';
 import AdminShowmore from '../AdminPanel/Screens/Home/AdminShowMore';
 import Showmore from '../Screens/Home/Showmore';
+import GuestHome from '../Screens/Home/GuestHome';
 
 const MainNavigation = () => {
   const Stack = createStackNavigator();
@@ -141,6 +142,11 @@ const MainNavigation = () => {
         <Stack.Screen
           component={Showmore}
           name="Showmore"
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          component={GuestHome}
+          name="GuestHome"
           options={{headerShown: false}}
         />
       </Stack.Navigator>
