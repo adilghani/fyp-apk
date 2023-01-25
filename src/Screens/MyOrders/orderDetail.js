@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
-import {StatusBar} from 'react-native';
+import {ScrollView, StatusBar} from 'react-native';
 import {ImageBackground} from 'react-native';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import LeftIconForWhite from '../../../assets/images/LeftIconforWhite';
@@ -8,7 +8,7 @@ import WhiteLeft from '../../../assets/images/WhiteLeft';
 import {primary, WhiteColor} from '../../Utils/ColorScheme/Colors';
 import {SemiBold} from '../../Utils/FontFamily/Fonfamily';
 import styles from './orderdetailstyle';
-
+import Barcode from 'react-native-barcode-builder';
 const OrderDetail = props => {
   const [userid, setuserid] = React.useState();
   const [dialogVisible, setdialogVisible] = React.useState(false);
@@ -45,11 +45,40 @@ const OrderDetail = props => {
           </TouchableOpacity>
         </View>
       </ImageBackground>
-      {/* <Image
+      <View style={{flex: 1}}>
+        <ScrollView>
+          {/* <Image
           source={require('../../../../components/assets/barcode.jpg')}
           style={{width: 'auto', height: 70, resizeMode: 'contain'}}
         /> */}
-      <View
+          <View style={{marginTop: 10, marginBottom: 10, alignItems: 'center'}}>
+            <Barcode
+              value={item?.ProductID.toString()}
+              format="CODE128"
+              width={1.4}
+            />
+            <Text style={{fontSize: 16, fontFamily: SemiBold, color: primary}}>
+              ID:#{item?.ProductID.toPrecision(7)}
+              {/* {Math.round(item?.ProductID)} */}
+            </Text>
+          </View>
+          <View style={{marginHorizontal: 10, marginBottom: 10}}>
+            <Text style={[styles.name, {marginBottom: 10}]}>
+              {item.PrductName}
+            </Text>
+            <Text style={styles.price}>RS: {item?.price}</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginHorizontal: 15,
+            }}>
+            <Text style={styles.tilespe}>Order Quantity</Text>
+            <Text style={styles.banrd}>{item?.orderqty}</Text>
+          </View>
+          {/* <View
         style={{
           height: 60,
           width: '60%',
@@ -59,106 +88,81 @@ const OrderDetail = props => {
           marginBottom: 10,
           marginHorizontal: 10,
           marginTop: 20,
-        }}>
-        <Text style={{fontSize: 16, fontFamily: SemiBold, color: WhiteColor}}>
-          #{item?.ProductID.toPrecision(7)}
-          {/* {Math.round(item?.ProductID)} */}
-        </Text>
-      </View>
-      <View style={{marginTop: 20, marginHorizontal: 10}}>
-        <Text style={styles.name}>{item.PrductName}</Text>
-        <Text style={styles.price}> {item?.price}</Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '100%',
-            alignItems: 'center',
-            marginTop: 20,
-            justifyContent: 'space-between',
+        }}></View> */}
 
-            marginHorizontal: 10,
-          }}>
-          <Text style={styles.tilespe}>Order Quantity</Text>
-          <Text style={styles.banrd}>{item?.orderqty}</Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '100%',
-            alignItems: 'center',
-            marginTop: 20,
-            justifyContent: 'space-between',
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 20,
+              justifyContent: 'space-between',
 
-            marginHorizontal: 10,
-          }}>
-          <Text style={styles.tilespe}>My Name </Text>
-          <Text style={styles.banrd}>{item?.username}</Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '100%',
-            alignItems: 'center',
-            marginTop: 20,
-            justifyContent: 'space-between',
+              marginHorizontal: 15,
+            }}>
+            <Text style={styles.tilespe}>My Name </Text>
+            <Text style={styles.banrd}>{item?.username}</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 20,
+              justifyContent: 'space-between',
 
-            marginHorizontal: 10,
-          }}>
-          <Text style={styles.tilespe}>My Contact </Text>
-          <Text style={styles.banrd}>{item?.contectname}</Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '100%',
-            alignItems: 'center',
-            marginTop: 20,
-            justifyContent: 'space-between',
+              marginHorizontal: 15,
+            }}>
+            <Text style={styles.tilespe}>My Contact </Text>
+            <Text style={styles.banrd}>{item?.contectname}</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 20,
+              justifyContent: 'space-between',
 
-            marginHorizontal: 10,
-          }}>
-          <Text style={styles.tilespe}>Shop name </Text>
-          <Text style={styles.banrd}>{item?.restorentName}</Text>
-        </View>
+              marginHorizontal: 15,
+            }}>
+            <Text style={styles.tilespe}>Shop name </Text>
+            <Text style={styles.banrd}>{item?.restorentName}</Text>
+          </View>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '100%',
-            alignItems: 'center',
-            marginTop: 20,
-            justifyContent: 'space-between',
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 20,
+              justifyContent: 'space-between',
 
-            marginHorizontal: 10,
-          }}>
-          <Text style={styles.tilespe}>Pickup point </Text>
-          <Text style={styles.banrd}>{item?.PickupPoint}</Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '100%',
-            alignItems: 'center',
-            marginTop: 20,
-            justifyContent: 'space-between',
+              marginHorizontal: 15,
+            }}>
+            <Text style={styles.tilespe}>Product Pickup point</Text>
+            <Text style={styles.banrd}>{item?.PickupPoint}</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 20,
+              justifyContent: 'space-between',
 
-            marginHorizontal: 10,
-          }}>
-          <Text style={styles.tilespe}>Your Address </Text>
-          <Text style={styles.banrd}>{item?.deleiveryAddress}</Text>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '100%',
-            alignItems: 'center',
-            marginTop: 20,
-            justifyContent: 'space-between',
-            marginHorizontal: 10,
-          }}>
-          <Text style={styles.tilespe}>Description</Text>
-          <Text style={styles.banrd}>{item?.description}</Text>
-        </View>
+              marginHorizontal: 15,
+            }}>
+            <Text style={styles.tilespe}>Your Delievery Point</Text>
+            <Text style={styles.banrd}>{item?.deleiveryAddress}</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 20,
+              justifyContent: 'space-between',
+              marginHorizontal: 15,
+            }}>
+            <Text style={styles.tilespe}>Description</Text>
+            <Text style={styles.banrd}>{item?.description}</Text>
+          </View>
+        </ScrollView>
       </View>
     </View>
   );

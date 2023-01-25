@@ -13,6 +13,7 @@ import Dialog from 'react-native-dialog';
 import Danger from '../../../assets/images/Danger';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {CommonActions} from '@react-navigation/native';
 
 export const save_user_id = async id => {
   await AsyncStorage.setItem('id', JSON.stringify(id));
@@ -44,12 +45,24 @@ const Login = props => {
         setLoading(false);
         console.log('userdata', data.user.uid);
         if (data.user.email == 'admin@gmail.com') {
-          props.navigation.navigate('AdminTab');
+          // props.navigation.navigate('AdminTab');
+          props.navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [{name: 'AdminTab'}],
+            }),
+          );
           save_user_id(data.user.uid);
           save_role('admin');
           save_userdata(data.user.email);
         } else {
-          props.navigation.navigate('TabNavigation');
+          // props.navigation.navigate('TabNavigation');
+          props.navigation.dispatch(
+            CommonActions.reset({
+              index: 1,
+              routes: [{name: 'TabNavigation'}],
+            }),
+          );
           save_user_id(data.user.uid);
           save_userdata(data.user.email);
 

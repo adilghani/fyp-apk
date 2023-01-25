@@ -19,6 +19,7 @@ import {Dimensions} from 'react-native';
 import storage from '@react-native-firebase/storage';
 import {firebase} from '@react-native-firebase/firestore';
 import {useFocusEffect} from '@react-navigation/native';
+import {Medium} from '../../Utils/FontFamily/Fonfamily';
 
 const GuestHome = props => {
   const [message, setMessage] = React.useState('');
@@ -209,7 +210,21 @@ const GuestHome = props => {
       <ImageBackground
         source={require('../../components/assets/mainimge.jpg')}
         style={{width: '100%', height: 200}}
-        imageStyle={{resizeMode: 'cover'}}></ImageBackground>
+        imageStyle={{resizeMode: 'cover'}}>
+        <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.6)'}}>
+          <TouchableOpacity
+            style={{
+              alignSelf: 'flex-end',
+              marginTop: 10,
+              marginHorizontal: 20,
+            }}
+            onPress={() => props.navigation.navigate('Login')}>
+            <Text style={{fontSize: 18, fontFamily: Medium, color: WhiteColor}}>
+              Sign-In
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
       <View style={styles.catcon}>
         <Text style={styles.cattitle}>Products</Text>
         <TouchableOpacity onPress={() => props.navigation.navigate('Showmore')}>

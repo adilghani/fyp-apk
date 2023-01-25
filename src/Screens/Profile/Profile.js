@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {CommonActions} from '@react-navigation/native';
 import React from 'react';
 import {TouchableOpacity, View, Image, Text, FlatList} from 'react-native';
 import LeftICon from '../../../assets/images/Lefticon';
@@ -20,7 +21,13 @@ const Profile = props => {
   const logout = async () => {
     const value = await save_role('null');
     await AsyncStorage.removeItem('id');
-    props.navigation.navigate('GuestHome');
+    // props.navigation.replace('GuestHome');
+    props.navigation.dispatch(
+      CommonActions.reset({
+        index: 1,
+        routes: [{name: 'GuestHome'}],
+      }),
+    );
   };
   const Tabs = [
     // {

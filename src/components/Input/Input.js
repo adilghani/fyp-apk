@@ -20,18 +20,27 @@ const Input = ({
   onChangeText,
   secureTextEntry,
   keyboardType,
+  icon,
 }) => {
   return (
     <View style={{marginBottom: 15}}>
-      <Text
+      <View
         style={{
-          fontSize: 19,
-          marginBottom: 7,
-          fontFamily: Medium,
-          color: maintitle,
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+          alignItems: 'center',
         }}>
-        {titleInput}
-      </Text>
+        <Text
+          style={{
+            fontSize: 19,
+            marginBottom: 7,
+            fontFamily: Medium,
+            color: maintitle,
+          }}>
+          {titleInput}
+        </Text>
+        {icon}
+      </View>
       <TextInput
         value={value}
         onChangeText={onChangeText}

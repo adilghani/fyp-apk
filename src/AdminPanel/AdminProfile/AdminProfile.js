@@ -23,6 +23,7 @@ import Spinner from 'react-native-spinkit';
 import Dialog from 'react-native-dialog';
 import Danger from '../../../assets/images/Danger';
 import TrashIcon from '../../../assets/images/TrashIcon';
+import {CommonActions} from '@react-navigation/native';
 
 const AdminProfile = props => {
   const [useremail, setuseremail] = React.useState();
@@ -35,6 +36,12 @@ const AdminProfile = props => {
     const value = await save_role('null');
     await AsyncStorage.removeItem('id');
     props.navigation.navigate('Login');
+    props.navigation.dispatch(
+      CommonActions.reset({
+        index: 1,
+        routes: [{name: 'GuestHome'}],
+      }),
+    );
   };
   const getallusers = async () => {
     setLoading(true);

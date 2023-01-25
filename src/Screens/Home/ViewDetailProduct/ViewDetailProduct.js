@@ -1,9 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React from 'react';
+import React, {useState} from 'react';
 import {ImageBackground} from 'react-native';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import LeftIconForWhite from '../../../../assets/images/LeftIconforWhite';
-import {primary, WhiteColor} from '../../../Utils/ColorScheme/Colors';
+import {
+  maintitle,
+  primary,
+  WhiteColor,
+} from '../../../Utils/ColorScheme/Colors';
 import styles from './style';
 import Modal from 'react-native-modal';
 import Spinner from 'react-native-spinkit';
@@ -15,7 +19,8 @@ import Close from '../../../../assets/images/Close';
 import Danger from '../../../../assets/images/Danger';
 import {firebase} from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-
+import DropDownPicker from 'react-native-dropdown-picker';
+import {Medium, Regular} from '../../../Utils/FontFamily/Fonfamily';
 const ViewDetailProduct = props => {
   const [userid, setuserid] = React.useState();
   const [dialogVisible, setdialogVisible] = React.useState(false);
@@ -29,6 +34,13 @@ const ViewDetailProduct = props => {
   const [delievrypoint, setDeleiveryPoinr] = React.useState();
   const [orderqty, setorderqty] = React.useState();
   const {item} = props.route.params;
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState('null&');
+  const [items, setItems] = useState([
+    {label: 'Our Pickup point', value: 'Our Pickup point'},
+    {label: 'My Address', value: ''},
+  ]);
+  // alert(value);
   const getadminid = async () => {
     const getid = await AsyncStorage.getItem('id');
     console.log('getid', getid);
@@ -38,27 +50,23 @@ const ViewDetailProduct = props => {
     getadminid();
   }, []);
   const submitdata = async () => {
-    setLoading(true);
-    if (
-      name == undefined ||
-      contect == undefined ||
-      delievrypoint == undefined
-    ) {
-      setdialogVisible(true);
+    if (name == undefined || contect == undefined || value == undefined) {
+      setdialogVisible1(true);
       setMessage('Fields Required');
       setwhatopen('notdone');
     } else {
+      setLoading(true);
       firebase
         .firestore()
         .collection('Orders')
         .add({
-          restorentName: item.restorentName,
-          PrductName: item.PrductName,
+          restorentName: item?.restorentName,
+          PrductName: item?.PrductName,
           PickupPoint: item?.PickupPoint,
           description: item?.description,
           productOwnerID: item?.userid,
           ordersubmitownerid: userid,
-          deleiveryAddress: delievrypoint,
+          deleiveryAddress: value,
           username: name,
           contectname: contect,
           orderqty: orderqty,
@@ -72,7 +80,7 @@ const ViewDetailProduct = props => {
           setLoading(false);
           console.log(ref);
           setdialogVisible1(true);
-          setMessage('Product add Succefully ');
+          setMessage('Order submit Succefully ');
           setwhatopen('done');
         });
     }
@@ -177,12 +185,62 @@ const ViewDetailProduct = props => {
             value={name}
             onChangeText={text => setname(text)}
           />
-          <Input
-            placeholder={'Your Address'}
-            titleInput={'Address'}
-            value={delievrypoint}
-            onChangeText={text => setDeleiveryPoinr(text)}
-          />
+          {value == null ||
+          value == 'null&' ||
+          value == undefined ||
+          value == 'Our Pickup point' ? (
+            <View>
+              <Text
+                style={{
+                  fontSize: 19,
+                  marginBottom: 7,
+                  fontFamily: Medium,
+                  color: maintitle,
+                }}>
+                Product Recieve Address
+              </Text>
+              <DropDownPicker
+                containerProps={{
+                  height: open === true ? 150 : null,
+                  backgroundColor: '#fff',
+                }}
+                style={{
+                  width: Dimensions.get('screen').width / 1.1,
+                  height: 60,
+                  borderWidth: 0.6,
+                  borderColor: primary,
+                  borderRadius: 5,
+                  marginBottom: 10,
+                }}
+                textStyle={{
+                  fontSize: 16,
+                  fontFamily: Medium,
+                  color: maintitle,
+                }}
+                open={open}
+                value={value}
+                items={items}
+                setOpen={setOpen}
+                setValue={setValue}
+                setItems={setItems}
+              />
+            </View>
+          ) : (
+            <Input
+              placeholder={'Your Address'}
+              titleInput={'Address'}
+              value={value}
+              onChangeText={text => setValue(text)}
+              icon={
+                <TouchableOpacity
+                  style={{marginHorizontal: 20}}
+                  onPress={() => setValue('null&')}>
+                  <Close />
+                </TouchableOpacity>
+              }
+            />
+          )}
+
           <Input
             placeholder={'Your Number'}
             titleInput={'Number'}
@@ -227,9 +285,9 @@ const ViewDetailProduct = props => {
                 whatopen == 'done'
                   ? props.navigation.navigate('MyOrders') &
                     setdialogVisible1(false)
-                  : whatopen == 'deletedone'
-                  ? props.navigation.navigate('Home') & setdialogVisible1(false)
-                  : setdialogVisible(false);
+                  : whatopen == 'notdone'
+                  ? setdialogVisible1(false)
+                  : setdialogVisible1(false);
               }}
               style={[
                 styles.cancelbtn,
