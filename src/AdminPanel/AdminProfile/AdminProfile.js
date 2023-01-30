@@ -125,6 +125,18 @@ const AdminProfile = props => {
       name: 'GBS Test',
     },
   ];
+  const Delete = (userid, iddoc) => {
+    // alert(userid);
+    const uid = userid;
+    auth()
+      .us.then(() => {
+        firebase.firestore().collection('Users').doc(iddoc).delete();
+      })
+      .catch(error => {
+        console.log(error, 'error');
+      })
+      .finally(i => console.log('finaly', i));
+  };
 
   return (
     <View style={styles.main}>
@@ -223,12 +235,14 @@ const AdminProfile = props => {
           <FlatList
             data={allusers}
             renderItem={({item, index}) => {
+              console.log('>>>>ids', item.userid);
               return (
                 <View style={styles.persolacon}>
                   <Text style={styles.persolaltitle}>{item?.useremail}</Text>
-                  {/* <TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => Delete(item.userid, item.id)}>
                     <TrashIcon />
-                  </TouchableOpacity> */}
+                  </TouchableOpacity>
                 </View>
               );
             }}
