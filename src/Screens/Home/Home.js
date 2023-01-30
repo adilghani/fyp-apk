@@ -241,7 +241,7 @@ const Home = props => {
                           })
                         }>
                         <Image
-                          source={{uri: item.productImage}}
+                          source={{uri: item?.productImage}}
                           style={{width: 90, height: 120}}
                         />
                         <Text style={styles.name}>{item.PrductName}</Text>

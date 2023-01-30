@@ -21,7 +21,7 @@ import Spinner from 'react-native-spinkit';
 import Dialog from 'react-native-dialog';
 import {Dimensions} from 'react-native';
 import Danger from '../../../../../assets/images/Danger';
-import {SemiBold} from '../../../../Utils/FontFamily/Fonfamily';
+import {Medium, SemiBold} from '../../../../Utils/FontFamily/Fonfamily';
 const AdminViewDetailProduct = props => {
   const {item} = props.route.params;
   const [message, setMessage] = React.useState('');
@@ -29,6 +29,8 @@ const AdminViewDetailProduct = props => {
   const [whatopen, setwhatopen] = React.useState('');
   const [dialogVisible, setdialogVisible] = React.useState(false);
   const [image, setimage] = React.useState();
+  const [deleteVisible, setdeleteVisible] = React.useState(false);
+
   const [data, setuserData] = React.useState([]);
   const [productsname, setProductName] = React.useState([]);
   const [userid, setuserid] = React.useState();
@@ -135,7 +137,8 @@ const AdminViewDetailProduct = props => {
               onPress={() => {
                 whatopen == 'done'
                   ? props.navigation.navigate('AdminTab') &
-                    setdialogVisible(false)
+                    setdialogVisible(false) &
+                    setdeleteVisible(false)
                   : setdialogVisible(false);
               }}
               style={[
@@ -150,6 +153,56 @@ const AdminViewDetailProduct = props => {
               ]}>
               <Text style={[styles.cancelbtntitle, {color: WhiteColor}]}>
                 {whatopen == 'done' ? 'Continue' : 'Try Again'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Dialog.Container>
+      <Dialog.Container
+        visible={deleteVisible}
+        contentStyle={{
+          borderRadius: 10,
+          backgroundColor: WhiteColor,
+          width: Dimensions.get('screen').width / 1.1,
+        }}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          {whatopen == 'done' || whatopen == 'deletedone' ? null : <Danger />}
+
+          <View style={styles.cancelcon}>
+            <Text style={styles.canceltilte}>Warning!</Text>
+            <Text style={styles.canceldet}>
+              Are you sure,want to delete this Product?
+            </Text>
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <TouchableOpacity
+              onPress={() => setdeleteVisible(false)}
+              style={[
+                styles.cancelbtn,
+                {
+                  backgroundColor: primary,
+                  width: Dimensions.get('screen').width / 2.9,
+                  marginLeft: 15,
+                },
+              ]}>
+              <Text
+                style={{fontSize: 16, fontFamily: Medium, color: WhiteColor}}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => Delete() & setdeleteVisible(false)}
+              style={[
+                styles.cancelbtn,
+                {
+                  backgroundColor: primary,
+                  width: Dimensions.get('screen').width / 2.9,
+                  marginLeft: 17,
+                },
+              ]}>
+              <Text
+                style={{fontSize: 16, fontFamily: Medium, color: WhiteColor}}>
+                Ok
               </Text>
             </TouchableOpacity>
           </View>
@@ -201,7 +254,9 @@ const AdminViewDetailProduct = props => {
           alignSelf: 'flex-end',
           paddingHorizontal: 10,
         }}>
-        <TouchableOpacity style={styles.btn} onPress={Delete}>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => setdeleteVisible(true)}>
           <Text style={styles.btntitle}>Delete</Text>
         </TouchableOpacity>
       </View>

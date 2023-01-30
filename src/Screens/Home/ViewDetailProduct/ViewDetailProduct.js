@@ -21,10 +21,15 @@ import {firebase} from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Medium, Regular} from '../../../Utils/FontFamily/Fonfamily';
+import WhiteLeft from '../../../../assets/images/WhiteLeft';
+import {StatusBar} from 'react-native';
+import Swiper from 'react-native-swiper';
+import RightIconForWhite from '../../../../assets/images/RightIconforWhite';
 const ViewDetailProduct = props => {
   const [userid, setuserid] = React.useState();
   const [dialogVisible, setdialogVisible] = React.useState(false);
   const [dialogVisible1, setdialogVisible1] = React.useState(false);
+  const [deleteVisible, setdeleteVisible] = React.useState(false);
 
   const [loading, setLoading] = React.useState(false);
   const [name, setname] = React.useState();
@@ -33,6 +38,9 @@ const ViewDetailProduct = props => {
   const [whatopen, setwhatopen] = React.useState('');
   const [delievrypoint, setDeleiveryPoinr] = React.useState();
   const [orderqty, setorderqty] = React.useState();
+  const [index, setIndex] = React.useState(0);
+  console.log(index);
+  const swiper = React.useRef(null);
   const {item} = props.route.params;
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('null&');
@@ -146,6 +154,7 @@ const ViewDetailProduct = props => {
   };
   return (
     <View style={styles.main}>
+      {/* <StatusBar barStyle={'light-content'} backgroundColor={'transparent'} /> */}
       <Modal
         isVisible={loading}
         style={{
@@ -287,6 +296,8 @@ const ViewDetailProduct = props => {
                     setdialogVisible1(false)
                   : whatopen == 'notdone'
                   ? setdialogVisible1(false)
+                  : whatopen == 'deletedone'
+                  ? props.navigation.navigate('TabNavigation')
                   : setdialogVisible1(false);
               }}
               style={[
@@ -308,28 +319,153 @@ const ViewDetailProduct = props => {
           </View>
         </View>
       </Dialog.Container>
-      <ImageBackground
-        source={{uri: item?.productImage}}
-        style={{width: '100%', height: 300, resizeMode: 'cover'}}>
-        <TouchableOpacity
-          style={{marginTop: 20, marginHorizontal: 20}}
-          onPress={() => props.navigation.navigate('TabNavigation')}>
-          <LeftIconForWhite />
-        </TouchableOpacity>
-      </ImageBackground>
+      <Dialog.Container
+        visible={deleteVisible}
+        contentStyle={{
+          borderRadius: 10,
+          backgroundColor: WhiteColor,
+          width: Dimensions.get('screen').width / 1.1,
+        }}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          {whatopen == 'done' || whatopen == 'deletedone' ? null : <Danger />}
+
+          <View style={styles.cancelcon}>
+            <Text style={styles.canceltilte}>Warning!</Text>
+            <Text style={styles.canceldet}>
+              Are you sure,want to delete this Product?
+            </Text>
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <TouchableOpacity
+              onPress={() => setdeleteVisible(false)}
+              style={[
+                styles.cancelbtn,
+                {
+                  backgroundColor: primary,
+                  width: Dimensions.get('screen').width / 2.9,
+                  marginLeft: 15,
+                },
+              ]}>
+              <Text
+                style={{fontSize: 16, fontFamily: Medium, color: WhiteColor}}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => Delete() & setdeleteVisible(false)}
+              style={[
+                styles.cancelbtn,
+                {
+                  backgroundColor: primary,
+                  width: Dimensions.get('screen').width / 2.9,
+                  marginLeft: 17,
+                },
+              ]}>
+              <Text
+                style={{fontSize: 16, fontFamily: Medium, color: WhiteColor}}>
+                Ok
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Dialog.Container>
+      <View style={{height: 300}}>
+        <Swiper
+          ref={swiper}
+          index={index}
+          activeDotColor={'#77E6B6'}
+          showsButtons={false}
+          onIndexChanged={index => setIndex(index)}
+          dotColor="#F8F9D3"
+          paginationStyle={styles.pagistio}
+          activeDot={
+            <View
+              style={{
+                width: 20,
+                backgroundColor: primary,
+                height: 5,
+                marginLeft: 8,
+                borderRadius: 30,
+              }}
+            />
+          }
+          dot={
+            <View
+              style={{
+                width: 20,
+                backgroundColor: '#E1E1E6',
+                height: 5,
+                marginLeft: 8,
+                borderRadius: 30,
+              }}
+            />
+          }>
+          <ImageBackground
+            source={{uri: item?.productImage}}
+            style={{width: '100%', height: 300, resizeMode: 'cover'}}>
+            <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}>
+              <TouchableOpacity
+                style={{marginTop: 20, marginHorizontal: 20}}
+                onPress={() => props.navigation.navigate('TabNavigation')}>
+                <WhiteLeft />
+              </TouchableOpacity>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginTop: '20%',
+                  marginHorizontal: 20,
+                }}>
+                <TouchableOpacity onPress={() => swiper.current.scrollBy(1)}>
+                  <WhiteLeft />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => swiper.current.scrollBy(1)}>
+                  <RightIconForWhite />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ImageBackground>
+          <ImageBackground
+            source={{uri: item?.productImage}}
+            style={{width: '100%', height: 300, resizeMode: 'cover'}}>
+            <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}>
+              <TouchableOpacity
+                style={{marginTop: 20, marginHorizontal: 20}}
+                onPress={() => props.navigation.navigate('TabNavigation')}>
+                <WhiteLeft />
+              </TouchableOpacity>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginTop: '20%',
+                  marginHorizontal: 20,
+                }}>
+                <TouchableOpacity onPress={() => swiper.current.scrollBy(1)}>
+                  <WhiteLeft />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => swiper.current.scrollBy(1)}>
+                  <RightIconForWhite />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ImageBackground>
+        </Swiper>
+      </View>
       <View style={{marginTop: 20, marginHorizontal: 10}}>
         <Text style={styles.name}>{item.PrductName}</Text>
-        <Text style={styles.price}> {item?.price}</Text>
+        <Text style={styles.price}>Rs:{item?.price}</Text>
 
         <View
           style={{
             flexDirection: 'row',
-            width: '100%',
             alignItems: 'center',
             marginTop: 20,
             justifyContent: 'space-between',
 
-            marginHorizontal: 10,
+            marginHorizontal: 15,
           }}>
           <Text style={styles.tilespe}>Pickup point </Text>
           <Text style={styles.banrd}>{item?.PickupPoint}</Text>
@@ -337,11 +473,10 @@ const ViewDetailProduct = props => {
         <View
           style={{
             flexDirection: 'row',
-            width: '100%',
             alignItems: 'center',
             marginTop: 20,
             justifyContent: 'space-between',
-            marginHorizontal: 10,
+            marginHorizontal: 15,
           }}>
           <Text style={styles.tilespe}>Description</Text>
           <Text style={styles.banrd}>{item?.description}</Text>
@@ -361,7 +496,7 @@ const ViewDetailProduct = props => {
           ]}
           onPress={() => {
             userid == item.userid
-              ? Delete()
+              ? setdeleteVisible(true)
               : userid == null
               ? props.navigation.replace('Login')
               : setdialogVisible(true);

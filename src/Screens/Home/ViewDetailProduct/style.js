@@ -59,8 +59,9 @@ const styles = StyleSheet.create({
     fontFamily: Regular,
     color: maintitle,
     fontSize: 16,
-    width: '70%',
+    // width: '70%',
   },
+
   btn: {
     width: Dimensions.get('screen').width / 2,
     height: 60,
