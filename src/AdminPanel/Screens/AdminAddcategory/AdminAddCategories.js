@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   FlatList,
+  ImageBackground,
   Platform,
   ScrollView,
   Text,
@@ -25,6 +26,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {Image} from 'react-native';
 import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
+import {Pressable} from 'react-native';
 const AdminAddCategories = props => {
   const [userid, setuserid] = React.useState('');
   const [Restorentname, setRestorentname] = React.useState();
@@ -35,10 +37,11 @@ const AdminAddCategories = props => {
   const [message, setMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [whatopen, setwhatopen] = React.useState('');
-  const [image, setImage] = React.useState();
+  const [image, setImage] = React.useState([]);
   const [selectimage, setSelectImage] = React.useState();
   const [key, setkey] = React.useState('1');
   const [price, setPrice] = React.useState();
+  const [DownloadURL, setDownloadURL] = React.useState([]);
 
   console.log('uri', image);
 
@@ -53,11 +56,18 @@ const AdminAddCategories = props => {
     ImagePicker.openPicker({
       width: 300,
       height: 400,
-      cropping: true,
-    }).then(image => {
-      console.log(image);
-      const imageuri = Platform.OS == 'ios' ? image.sourceURL : image.path;
-      setImage(imageuri);
+      // cropping: true,
+      multiple: true,
+    }).then(response => {
+      const imageuri =
+        Platform.OS == 'ios' ? response.sourceURL : response.path;
+      if (response.length > 3) {
+        Alert.alert('You can select only 3 images');
+      } else {
+        setImage(response);
+        // response.map(img => {
+        // });
+      }
     });
   };
 
@@ -71,78 +81,119 @@ const AdminAddCategories = props => {
   React.useEffect(() => {
     getadminid();
   }, []);
-  const submitdata = async () => {
-    const imageuri = await uploadimage();
-    console.log('iamge uri', imageuri);
-    if (image == undefined) {
-      setdialogVisible(true);
-      setMessage('Please add image');
-      setwhatopen('notdone');
-    } else if (
-      Restorentname == undefined ||
-      ProductName == undefined ||
-      pcikuppoint == undefined ||
-      description == undefined
-    ) {
-      setdialogVisible(true);
-      setMessage('Fields Required');
-      setwhatopen('notdone');
-    } else {
-      firebase
-        .firestore()
-        .collection('Products')
-        .add({
-          restorentName: Restorentname,
-          PrductName: ProductName,
-          PickupPoint: pcikuppoint,
-          description: description,
-          userid: userid,
-          productkey: 'adminproducts',
-          productImage: imageuri,
-          price: price,
-          ProductID: Math.random(),
-        })
-        .then(ref => {
-          setLoading(false);
-          console.log(ref);
-          setdialogVisible(true);
-          setMessage('Product add Succefully ');
-          setwhatopen('done');
-          setProductName();
-          setDescription();
-          setRestorentname();
-          setPrice();
-          setPrice();
-        });
+  React.useEffect(() => {
+    if (DownloadURL.length == 3) {
+      submitdata();
+      // setDownloadURL([]);
     }
+  }, [DownloadURL]);
+  const submitdata = async () => {
+    // setLoading(true);
+    // const imageuri = await uploadimage();
+    // setLoading(false);
+    // console.log('iamge uri', imageuri);
+    // if (image == undefined) {
+    //   setdialogVisible(true);
+    //   setMessage('Please add image');
+    //   setwhatopen('notdone');
+    // } else if (
+    //   Restorentname == undefined ||
+    //   ProductName == undefined ||
+    //   pcikuppoint == undefined ||
+    //   description == undefined
+    // ) {
+    //   setdialogVisible(true);
+    //   setMessage('Fields Required');
+    //   setwhatopen('notdone');
+    // } else {
+    firebase
+      .firestore()
+      .collection('Products')
+      .add({
+        restorentName: Restorentname,
+        PrductName: ProductName,
+        PickupPoint: pcikuppoint,
+        description: description,
+        userid: userid,
+        productkey: 'adminproducts',
+        productImage: DownloadURL,
+        price: price,
+        // ProductID: Math.random(),
+      })
+      .then(ref => {
+        setLoading(false);
+        console.log(ref);
+        setdialogVisible(true);
+        setMessage('Product add Succefully ');
+        setwhatopen('done');
+        setProductName();
+        setDescription();
+        setRestorentname();
+        setPrice();
+        setPrice();
+      });
+    // }
   };
   const uploadimage = async () => {
-    const uploaduri = image;
-    let filename = uploaduri.substring(uploaduri.lastIndexOf('/') + 1);
-    const extension = filename.split('.').pop();
-    const name = filename.split('.').slice(0, -1).join('.');
-    filename = name + Date.now() + '.' + extension;
-    const storageref = storage().ref(filename);
-    const task = storageref.putFile(uploaduri);
+    // ************************* FRO MULTIPLE IMAGE UPLOAD************************
+    const uploadedPhotos = await Promise.all(
+      image.map(async photo => {
+        const photoUploadUri = photo?.path;
+        let filename = photo?.path.substring(photo?.path.lastIndexOf('/') + 1);
+        const extension = filename.split('.').pop();
+        const name = filename.split('.').slice(0, -1).join('.');
+        filename = name + Date.now() + '.' + extension;
+        const photoToUpload = storage().ref(filename);
+        const uploadPhoto = storage().ref(filename).putFile(photoUploadUri);
+        // console.log('filenasme', uploadPhoto.getDownloadURL());
 
-    try {
-      setLoading(true);
-      await task;
-      const url = storageref.getDownloadURL();
-      setLoading(false);
-      setImage(null);
-      setProductName();
-      setDescription();
-      setRestorentname();
-      setPrice();
-      setPrice();
+        // *Uploading photo
+        try {
+          setLoading(true);
 
-      return url;
-    } catch (e) {
-      setLoading(false);
-      console.log('???', e);
-      return null;
-    }
+          await uploadPhoto;
+          const downloadLink = await photoToUpload.getDownloadURL();
+          setLoading(false);
+
+          console.log('urls', downloadLink);
+          return downloadLink;
+        } catch (err) {
+          setLoading(false);
+
+          console.log(err);
+        }
+      }),
+    );
+    console.log('urls', uploadedPhotos);
+    setDownloadURL(uploadedPhotos);
+
+    // **************************** FRO SINGAL IMAGE UPLOAD****************
+    // const uploaduri = image;
+    // let filename = uploaduri.substring(uploaduri.lastIndexOf('/') + 1);
+    // const extension = filename.split('.').pop();
+    // const name = filename.split('.').slice(0, -1).join('.');
+    // filename = name + Date.now() + '.' + extension;
+    // const storageref = storage().ref(filename);
+    // const task = storageref.putFile(uploaduri);
+
+    // try {
+    //   setLoading(true);
+    //   await task;
+    //   const url = storageref.getDownloadURL();
+    //   setLoading(false);
+    //   setImage(null);
+    //   setProductName();
+    //   setDescription();
+    //   setRestorentname();
+    //   setPrice();
+    //   setPrice();
+
+    //   return url;
+    // } catch (e) {
+    //   setLoading(false);
+    //   console.log('???', e);
+    //   return null;
+    // }
     // }
     // const uploaduri = selectimage;
     // let filename = uploaduri.substring(uploaduri.lastIndexOf('/') + 1);
@@ -263,20 +314,64 @@ const AdminAddCategories = props => {
               style={{alignSelf: 'center'}}></Entypo>
             <Text style={styles.addimg}>Add Image</Text>
           </TouchableOpacity>
-          {image == undefined || image == null ? null : (
-            <View style={{alignSelf: 'center', marginTop: 15}}>
-              <Image
-                source={{uri: image}}
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              alignSelf: 'center',
+              marginTop: 20,
+            }}>
+            {image?.map(img => (
+              <ImageBackground
+                source={{uri: img.path}}
                 style={{
-                  width: Dimensions.get('screen').width / 1.1,
-                  height: 130,
+                  width: 90,
+                  height: 120,
+                  borderRadius: 5,
                   resizeMode: 'cover',
-                }}
-              />
-            </View>
-          )}
+                  margin: 3,
+                }}>
+                <View
+                  style={{
+                    flex: 1,
+                    backgroundColor: 'rgba(0,0,0,0.1)',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Pressable>
+                    {/* <AntDesign name="close" size={25} color="white" /> */}
+                  </Pressable>
+                </View>
+              </ImageBackground>
+            ))}
+          </View>
           <View style={{alignSelf: 'center', marginTop: 20}}>
-            <Button ButtonTitle={'Submit'} onPress={submitdata} />
+            <Button
+              ButtonTitle={'Submit'}
+              onPress={async () => {
+                // setLoading(true);
+                // const imageuri = await uploadimage();
+                // setLoading(false);
+
+                // console.log('iamge uri', imageuri);
+                if (image == undefined) {
+                  setdialogVisible(true);
+                  setMessage('Please add image');
+                  setwhatopen('notdone');
+                } else if (
+                  Restorentname == undefined ||
+                  ProductName == undefined ||
+                  pcikuppoint == undefined ||
+                  description == undefined
+                ) {
+                  setdialogVisible(true);
+                  setMessage('Fields Required');
+                  setwhatopen('notdone');
+                } else {
+                  await uploadimage();
+                }
+              }}
+            />
           </View>
         </ScrollView>
       </View>

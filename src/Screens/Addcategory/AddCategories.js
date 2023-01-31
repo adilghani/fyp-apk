@@ -45,7 +45,7 @@ const AdminAddCategories = props => {
   const [key, setkey] = React.useState('1');
   const [price, setPrice] = React.useState();
   const [DownloadURL, setDownloadURL] = React.useState([]);
-  console.log('DownloadURL', DownloadURL);
+  // console.log('DownloadURL', DownloadURL.length);
 
   // launchImageLibrary(options callback)
   const getpick = () => {
@@ -87,48 +87,56 @@ const AdminAddCategories = props => {
   React.useEffect(() => {
     getadminid();
   }, []);
-  const submitdata = async () => {
-    const imageuri = await uploadimage();
-    console.log('iamge uri', imageuri);
-    if (image == undefined) {
-      setdialogVisible(true);
-      setMessage('Please add image');
-      setwhatopen('notdone');
-    } else if (
-      Restorentname == undefined ||
-      ProductName == undefined ||
-      pcikuppoint == undefined ||
-      description == undefined
-    ) {
-      setdialogVisible(true);
-      setMessage('Fields Required');
-      setwhatopen('notdone');
-    } else {
-      if (DownloadURL.length == 2) {
-        setLoading(true);
-        alert('worlk');
-        firebase
-          .firestore()
-          .collection('Products')
-          .add({
-            restorentName: Restorentname,
-            PrductName: ProductName,
-            PickupPoint: pcikuppoint,
-            description: description,
-            userid: userid,
-            productkey: 'adminproducts',
-            productImage: DownloadURL,
-            price: price,
-          })
-          .then(ref => {
-            setLoading(false);
-            console.log(ref);
-            setdialogVisible(true);
-            setMessage('Product add Succefully ');
-            setwhatopen('done');
-          });
-      }
+  React.useEffect(() => {
+    if (DownloadURL.length == 3) {
+      submitdata();
+      // setDownloadURL([]);
     }
+  }, [DownloadURL]);
+  const submitdata = async () => {
+    firebase
+      .firestore()
+      .collection('Products')
+      .add({
+        restorentName: Restorentname,
+        PrductName: ProductName,
+        PickupPoint: pcikuppoint,
+        description: description,
+        userid: userid,
+        productkey: 'adminproducts',
+        productImage: DownloadURL,
+        price: price,
+      })
+      .then(ref => {
+        setLoading(false);
+        console.log(ref);
+        setdialogVisible(true);
+        setMessage('Product add Succefully ');
+        setwhatopen('done');
+      });
+    // setLoading(true);
+    // const imageuri = await uploadimage();
+    // setLoading(false);
+
+    // console.log('iamge uri', imageuri);
+    // if (image == undefined) {
+    //   setdialogVisible(true);
+    //   setMessage('Please add image');
+    //   setwhatopen('notdone');
+    // } else if (
+    //   Restorentname == undefined ||
+    //   ProductName == undefined ||
+    //   pcikuppoint == undefined ||
+    //   description == undefined
+    // ) {
+    //   setdialogVisible(true);
+    //   setMessage('Fields Required');
+    //   setwhatopen('notdone');
+    // } else {
+
+    //   setLoading(true);
+
+    // }
   };
 
   const uploadimage = async () => {
@@ -345,7 +353,32 @@ const AdminAddCategories = props => {
             ))}
           </View>
           <View style={{marginTop: 20, alignSelf: 'center'}}>
-            <Button ButtonTitle={'Submit'} onPress={submitdata} />
+            <Button
+              ButtonTitle={'Submit'}
+              onPress={async () => {
+                // setLoading(true);
+                // const imageuri = await uploadimage();
+                // setLoading(false);
+
+                // console.log('iamge uri', imageuri);
+                if (image == undefined) {
+                  setdialogVisible(true);
+                  setMessage('Please add image');
+                  setwhatopen('notdone');
+                } else if (
+                  Restorentname == undefined ||
+                  ProductName == undefined ||
+                  pcikuppoint == undefined ||
+                  description == undefined
+                ) {
+                  setdialogVisible(true);
+                  setMessage('Fields Required');
+                  setwhatopen('notdone');
+                } else {
+                  await uploadimage();
+                }
+              }}
+            />
           </View>
         </ScrollView>
       </View>

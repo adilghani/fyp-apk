@@ -22,15 +22,21 @@ import Dialog from 'react-native-dialog';
 import {Dimensions} from 'react-native';
 import Danger from '../../../../../assets/images/Danger';
 import {Medium, SemiBold} from '../../../../Utils/FontFamily/Fonfamily';
+import Swiper from 'react-native-swiper';
+import WhiteLeft from '../../../../../assets/images/WhiteLeft';
+import RightIconForWhite from '../../../../../assets/images/RightIconforWhite';
+
 const AdminViewDetailProduct = props => {
-  const {item} = props.route.params;
+  const {item, image1, image2, image3} = props.route.params;
   const [message, setMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [whatopen, setwhatopen] = React.useState('');
   const [dialogVisible, setdialogVisible] = React.useState(false);
   const [image, setimage] = React.useState();
   const [deleteVisible, setdeleteVisible] = React.useState(false);
-
+  const [index, setIndex] = React.useState(0);
+  console.log(image1);
+  const swiper = React.useRef(null);
   const [data, setuserData] = React.useState([]);
   const [productsname, setProductName] = React.useState([]);
   const [userid, setuserid] = React.useState();
@@ -46,23 +52,29 @@ const AdminViewDetailProduct = props => {
       .then(documentSnapShots => {
         if (documentSnapShots.exists) {
           const {productImage} = documentSnapShots.data();
-          if (productImage != null) {
-            const storageref = storage().refFromURL(productImage);
-            const imageRef = storage().ref(storageref.fullPath);
-            console.log('_______', storageref.fullPath);
-            imageRef
-              .delete()
-              .then(() => {
-                console.log(`${productImage}hase been deleted successfully`);
-                deletefirestoredata();
-                setLoading(false);
-              })
-              .catch(e => {
-                setLoading(false);
+          {
+            productImage.map(item => {
+              const storageref = storage().refFromURL(item);
+              const imageRef = storage().ref(storageref.fullPath);
+              console.log('Deletedata', imageRef);
+              // setLoading(false);
+              imageRef
+                .delete()
+                .then(() => {
+                  console.log(`${productImage}hase been deleted successfully`);
+                  deletefirestoredata();
+                  setLoading(false);
+                })
+                .catch(e => {
+                  setLoading(false);
 
-                console.log('error while deleting the image', e);
-              });
+                  console.log('error while deleting the image', e);
+                });
+            });
           }
+          // if (productImage != null) {
+          //   console.log('_______', storageref.fullPath);
+          // }
         }
       });
   };
@@ -208,15 +220,117 @@ const AdminViewDetailProduct = props => {
           </View>
         </View>
       </Dialog.Container>
-      <ImageBackground
-        source={{uri: item?.productImage}}
-        style={{width: '100%', height: 300, resizeMode: 'cover'}}>
-        <TouchableOpacity
-          style={{marginTop: 20, marginHorizontal: 20}}
-          onPress={() => props.navigation.navigate('AdminHome')}>
-          <LeftIconForWhite />
-        </TouchableOpacity>
-      </ImageBackground>
+      <View style={{height: 300}}>
+        <Swiper
+          ref={swiper}
+          index={index}
+          activeDotColor={'#77E6B6'}
+          showsButtons={false}
+          onIndexChanged={index => setIndex(index)}
+          dotColor="#F8F9D3"
+          paginationStyle={styles.pagistio}
+          activeDot={
+            <View
+              style={{
+                width: 20,
+                backgroundColor: primary,
+                height: 5,
+                marginLeft: 8,
+                borderRadius: 30,
+              }}
+            />
+          }
+          dot={
+            <View
+              style={{
+                width: 20,
+                backgroundColor: '#E1E1E6',
+                height: 5,
+                marginLeft: 8,
+                borderRadius: 30,
+              }}
+            />
+          }>
+          <ImageBackground
+            source={{uri: image1}}
+            style={{width: '100%', height: 300, resizeMode: 'cover'}}>
+            <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}>
+              <TouchableOpacity
+                style={{marginTop: 20, marginHorizontal: 20}}
+                onPress={() => props.navigation.navigate('TabNavigation')}>
+                <WhiteLeft />
+              </TouchableOpacity>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginTop: '20%',
+                  marginHorizontal: 20,
+                }}>
+                <TouchableOpacity onPress={() => swiper.current.scrollBy(1)}>
+                  <WhiteLeft />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => swiper.current.scrollBy(1)}>
+                  <RightIconForWhite />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ImageBackground>
+          <ImageBackground
+            source={{uri: image2}}
+            style={{width: '100%', height: 300, resizeMode: 'cover'}}>
+            <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}>
+              <TouchableOpacity
+                style={{marginTop: 20, marginHorizontal: 20}}
+                onPress={() => props.navigation.navigate('TabNavigation')}>
+                <WhiteLeft />
+              </TouchableOpacity>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginTop: '20%',
+                  marginHorizontal: 20,
+                }}>
+                <TouchableOpacity onPress={() => swiper.current.scrollBy(1)}>
+                  <WhiteLeft />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => swiper.current.scrollBy(1)}>
+                  <RightIconForWhite />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ImageBackground>
+          <ImageBackground
+            source={{uri: image3}}
+            style={{width: '100%', height: 300, resizeMode: 'cover'}}>
+            <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}>
+              <TouchableOpacity
+                style={{marginTop: 20, marginHorizontal: 20}}
+                onPress={() => props.navigation.navigate('TabNavigation')}>
+                <WhiteLeft />
+              </TouchableOpacity>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginTop: '20%',
+                  marginHorizontal: 20,
+                }}>
+                <TouchableOpacity onPress={() => swiper.current.scrollBy(1)}>
+                  <WhiteLeft />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => swiper.current.scrollBy(1)}>
+                  <RightIconForWhite />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ImageBackground>
+        </Swiper>
+      </View>
       <View style={{marginTop: 20, marginHorizontal: 10}}>
         <Text style={styles.name}>{item.PrductName}</Text>
         <Text style={styles.price}> {item?.price}</Text>

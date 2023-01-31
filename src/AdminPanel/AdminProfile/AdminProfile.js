@@ -239,10 +239,10 @@ const AdminProfile = props => {
               return (
                 <View style={styles.persolacon}>
                   <Text style={styles.persolaltitle}>{item?.useremail}</Text>
-                  <TouchableOpacity
+                  {/* <TouchableOpacity
                     onPress={() => Delete(item.userid, item.id)}>
                     <TrashIcon />
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                 </View>
               );
             }}

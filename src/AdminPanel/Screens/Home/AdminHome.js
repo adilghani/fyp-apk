@@ -214,7 +214,7 @@ const AdminHome = props => {
               numColumns={3}
               data={data}
               renderItem={({item, index}) => {
-                console.log('item', item.id);
+                console.log('item', item.productImage[0]);
                 return (
                   <View>
                     {index == 0 ||
@@ -228,10 +228,16 @@ const AdminHome = props => {
                         onPress={() =>
                           props.navigation.navigate('AdminViewDetailProduct', {
                             item: item,
+                            image1: item?.productImage[0],
+                            image2: item?.productImage[1],
+                            image3: item?.productImage[2],
                           })
                         }>
+                        {item?.productImage.map((item, index) => {
+                          console.log('images', item);
+                        })}
                         <Image
-                          source={{uri: item.productImage}}
+                          source={{uri: item.productImage[0]}}
                           style={{width: 90, height: 120}}
                         />
                         <Text style={styles.name}>{item.PrductName}</Text>
