@@ -40,8 +40,9 @@ const ViewDetailProduct = props => {
   const [orderqty, setorderqty] = React.useState();
   const [index, setIndex] = React.useState(0);
   console.log(index);
+
   const swiper = React.useRef(null);
-  const {item} = props.route.params;
+  const {item, image1, image2, image3} = props.route.params;
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('null&');
   const [items, setItems] = useState([
@@ -104,24 +105,29 @@ const ViewDetailProduct = props => {
       .then(documentSnapShots => {
         if (documentSnapShots.exists) {
           const {productImage} = documentSnapShots.data();
-          if (productImage != null) {
-            const storageref = storage().refFromURL(productImage);
-            const imageRef = storage().ref(storageref.fullPath);
-            setLoading(false);
-            console.log('_______', storageref.fullPath);
-            imageRef
-              .delete()
-              .then(() => {
-                console.log(`${productImage}hase been deleted successfully`);
-                deletefirestoredata();
-                setLoading(false);
-              })
-              .catch(e => {
-                setLoading(false);
+          {
+            productImage.map(item => {
+              const storageref = storage().refFromURL(item);
+              const imageRef = storage().ref(storageref.fullPath);
+              console.log('Deletedata', imageRef);
+              // setLoading(false);
+              imageRef
+                .delete()
+                .then(() => {
+                  console.log(`${productImage}hase been deleted successfully`);
+                  deletefirestoredata();
+                  setLoading(false);
+                })
+                .catch(e => {
+                  setLoading(false);
 
-                console.log('error while deleting the image', e);
-              });
+                  console.log('error while deleting the image', e);
+                });
+            });
           }
+          // if (productImage != null) {
+          //   console.log('_______', storageref.fullPath);
+          // }
         }
       });
   };
@@ -401,7 +407,7 @@ const ViewDetailProduct = props => {
             />
           }>
           <ImageBackground
-            source={{uri: item?.productImage}}
+            source={{uri: image1}}
             style={{width: '100%', height: 300, resizeMode: 'cover'}}>
             <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}>
               <TouchableOpacity
@@ -427,7 +433,33 @@ const ViewDetailProduct = props => {
             </View>
           </ImageBackground>
           <ImageBackground
-            source={{uri: item?.productImage}}
+            source={{uri: image2}}
+            style={{width: '100%', height: 300, resizeMode: 'cover'}}>
+            <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}>
+              <TouchableOpacity
+                style={{marginTop: 20, marginHorizontal: 20}}
+                onPress={() => props.navigation.navigate('TabNavigation')}>
+                <WhiteLeft />
+              </TouchableOpacity>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginTop: '20%',
+                  marginHorizontal: 20,
+                }}>
+                <TouchableOpacity onPress={() => swiper.current.scrollBy(1)}>
+                  <WhiteLeft />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => swiper.current.scrollBy(1)}>
+                  <RightIconForWhite />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ImageBackground>
+          <ImageBackground
+            source={{uri: image3}}
             style={{width: '100%', height: 300, resizeMode: 'cover'}}>
             <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}>
               <TouchableOpacity
