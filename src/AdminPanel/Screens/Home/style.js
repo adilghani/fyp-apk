@@ -5,7 +5,7 @@ import {
   Darkcolor,
   primary,
 } from '../../../Utils/ColorScheme/Colors';
-import {Medium, SemiBold} from '../../../Utils/FontFamily/Fonfamily';
+import {Medium, Regular, SemiBold} from '../../../Utils/FontFamily/Fonfamily';
 
 const styles = StyleSheet.create({
   main: {
@@ -66,6 +66,26 @@ const styles = StyleSheet.create({
     color: maintitle,
     position: 'absolute',
     bottom: 10,
+  },
+  searchcon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: Dimensions.get('screen').width / 1.1,
+    height: 60,
+    backgroundColor: WhiteColor,
+    marginTop: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: primary,
+    marginBottom: 15,
+  },
+  input: {
+    fontSize: 15,
+    color: '#9EA3AE',
+    fontFamily: Regular,
+    width: '80%',
   },
 });
 export default styles;

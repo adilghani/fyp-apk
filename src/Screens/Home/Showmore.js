@@ -20,6 +20,8 @@ import storage from '@react-native-firebase/storage';
 import {firebase} from '@react-native-firebase/firestore';
 import {useFocusEffect} from '@react-navigation/native';
 import WhiteLeft from '../../../assets/images/WhiteLeft';
+import SearchIcon from '../../../assets/images/SearchImage';
+import {TextInput} from 'react-native';
 
 const Showmore = props => {
   const [message, setMessage] = React.useState('');
@@ -29,7 +31,23 @@ const Showmore = props => {
   const [image, setimage] = React.useState();
   const [data, setuserData] = React.useState([]);
   const [productsname, setProductName] = React.useState([]);
+  const [Searchdata, setSearchdata] = React.useState('nosearch');
 
+  const [Recommendeddata, setRecommendeddata] = React.useState(data);
+  console.log('recomdata', Recommendeddata);
+  const [search, setSerach] = React.useState('');
+
+  const Esearching = text => {
+    const newData = data.filter(item => {
+      const itemData = `${item.PrductName.toUpperCase()}`;
+
+      const searchText = text.toUpperCase();
+
+      return itemData.indexOf(searchText) > -1;
+    });
+    setRecommendeddata(newData);
+    console.log('>>>>>>???', newData);
+  };
   console.log('data', productsname);
   const familyregister = async () => {
     const imagearr = [];
@@ -215,6 +233,21 @@ const Showmore = props => {
         </TouchableOpacity>
         <Text style={styles.cattitle1}>All Products</Text>
       </View>
+      <View style={styles.searchcon}>
+        <SearchIcon />
+        <TextInput
+          placeholder="Search product"
+          style={styles.input}
+          value={search}
+          onChangeText={text => {
+            Esearching(text);
+            setSerach(text);
+            setSearchdata(text);
+            //   searching(text);
+          }}
+          // editable={false}
+        />
+      </View>
 
       <ScrollView>
         {data == undefined ? null : (
@@ -222,7 +255,7 @@ const Showmore = props => {
             <FlatList
               contentContainerStyle={{paddingBottom: 70}}
               numColumns={2}
-              data={data}
+              data={Searchdata == 'nosearch' ? data : Recommendeddata}
               renderItem={({item, index}) => {
                 console.log('item', item);
                 return (

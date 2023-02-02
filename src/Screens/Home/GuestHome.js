@@ -20,6 +20,11 @@ import storage from '@react-native-firebase/storage';
 import {firebase} from '@react-native-firebase/firestore';
 import {useFocusEffect} from '@react-navigation/native';
 import {Medium} from '../../Utils/FontFamily/Fonfamily';
+import Swiper from 'react-native-swiper';
+import WhiteLeft from '../../../assets/images/WhiteLeft';
+import RightIconForWhite from '../../../assets/images/RightIconforWhite';
+import {TextInput} from 'react-native';
+import SearchIcon from '../../../assets/images/SearchImage';
 
 const GuestHome = props => {
   const [message, setMessage] = React.useState('');
@@ -29,7 +34,10 @@ const GuestHome = props => {
   const [image, setimage] = React.useState();
   const [data, setuserData] = React.useState([]);
   const [productsname, setProductName] = React.useState([]);
+  const [index, setIndex] = React.useState(0);
+  console.log(index);
 
+  const swiper = React.useRef(null);
   console.log('data', productsname);
   const familyregister = async () => {
     const imagearr = [];
@@ -82,6 +90,20 @@ const GuestHome = props => {
       // return () => unsubscribe();
     }, []),
   );
+  const mainpage = [
+    {
+      img: require('../../components/assets/mainimge.jpg'),
+      title: 'Helllo wellcome to Ecommece',
+    },
+    {
+      img: require('../../components/assets/mainimge.jpg'),
+      title: 'Helllo wellcome to Ecommece',
+    },
+    {
+      img: require('../../components/assets/mainimge.jpg'),
+      title: 'Helllo wellcome to Ecommece',
+    },
+  ];
   // const cat = [
   //   {
   //     name: 'Wireless Earbuds',
@@ -207,7 +229,77 @@ const GuestHome = props => {
           </View>
         </View>
       </Dialog.Container>
-      <ImageBackground
+      <View style={{height: 300}}>
+        <Swiper
+          autoplay={true}
+          ref={swiper}
+          index={index}
+          activeDotColor={'#77E6B6'}
+          showsButtons={false}
+          onIndexChanged={index => setIndex(index)}
+          dotColor="#F8F9D3"
+          paginationStyle={styles.pagistio}
+          activeDot={
+            <View
+              style={{
+                width: 20,
+                backgroundColor: primary,
+                height: 5,
+                marginLeft: 8,
+                borderRadius: 30,
+              }}
+            />
+          }
+          dot={
+            <View
+              style={{
+                width: 20,
+                backgroundColor: '#E1E1E6',
+                height: 5,
+                marginLeft: 8,
+                borderRadius: 30,
+              }}
+            />
+          }>
+          <ImageBackground
+            source={require('../../components/assets/on3.jpeg')}
+            style={{width: '100%', height: 300, resizeMode: 'cover'}}>
+            <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)'}}>
+              <View style={{alignItems: 'center', marginTop: '30%'}}>
+                <Text
+                  style={{fontSize: 24, fontFamily: Medium, color: WhiteColor}}>
+                  Buy good Product which you want{' '}
+                </Text>
+              </View>
+            </View>
+          </ImageBackground>
+          <ImageBackground
+            source={require('../../components/assets/on2.jpeg')}
+            style={{width: '100%', height: 300, resizeMode: 'cover'}}>
+            <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)'}}>
+              <View style={{alignItems: 'center', marginTop: '30%'}}>
+                <Text
+                  style={{fontSize: 24, fontFamily: Medium, color: WhiteColor}}>
+                  Buy good Product which you want{' '}
+                </Text>
+              </View>
+            </View>
+          </ImageBackground>
+          <ImageBackground
+            source={require('../../components/assets/on1.jpeg')}
+            style={{width: '100%', height: 300, resizeMode: 'cover'}}>
+            <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)'}}>
+              <View style={{alignItems: 'center', marginTop: '30%'}}>
+                <Text
+                  style={{fontSize: 24, fontFamily: Medium, color: WhiteColor}}>
+                  Buy good Product which you want{' '}
+                </Text>
+              </View>
+            </View>
+          </ImageBackground>
+        </Swiper>
+      </View>
+      {/* <ImageBackground
         source={require('../../components/assets/mainimge.jpg')}
         style={{width: '100%', height: 200}}
         imageStyle={{resizeMode: 'cover'}}>
@@ -224,7 +316,7 @@ const GuestHome = props => {
             </Text>
           </TouchableOpacity>
         </View>
-      </ImageBackground>
+      </ImageBackground> */}
       <View style={styles.catcon}>
         <Text style={styles.cattitle}>Products</Text>
         <TouchableOpacity onPress={() => props.navigation.navigate('Showmore')}>

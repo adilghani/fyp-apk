@@ -1,16 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useEffect} from 'react';
-import {StatusBar, Text, View} from 'react-native';
+import {ImageBackground} from 'react-native';
+import {Image, StatusBar, Text, View} from 'react-native';
 import {primary, WhiteColor} from '../../Utils/ColorScheme/Colors';
 import {SemiBold} from '../../Utils/FontFamily/Fonfamily';
 const Wellcome = props => {
   const [hideSplash, setHideSplash] = React.useState(true);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     props.navigation.navigate('Login');
-  //   }, 4000);
-  // });
   React.useEffect(async () => {
     setTimeout(async () => {
       try {
@@ -25,16 +21,20 @@ const Wellcome = props => {
         }
       } catch (error) {
         console.log(error);
-        // Error retrieving data
       }
     }, 3000);
-
-    //   props.navigation.navigate("HomeTab")
   }, [hideSplash]);
 
   return (
     <View style={{flex: 1, backgroundColor: WhiteColor}}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
+      <ImageBackground
+        source={require('../../components/assets/Logo.jpeg')}
+        style={{
+          height: '100%',
+          width: '100%',
+          resizeMode: 'contain',
+        }}></ImageBackground>
+      {/* <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
 
       <Text
         style={{
@@ -45,7 +45,7 @@ const Wellcome = props => {
           color: primary,
         }}>
         Ecommerce
-      </Text>
+      </Text> */}
     </View>
   );
 };
