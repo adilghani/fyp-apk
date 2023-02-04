@@ -164,7 +164,11 @@ const Showmore = props => {
   // ];
   return (
     <View style={styles.main}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
+      <StatusBar
+        barStyle={'light-content'}
+        // translucent
+        backgroundColor={primary}
+      />
       <Modal
         isVisible={loading}
         style={{
@@ -225,7 +229,7 @@ const Showmore = props => {
           </View>
         </View>
       </Dialog.Container>
-      <View style={styles.catcon1}>
+      <View style={[styles.catcon1]}>
         <TouchableOpacity
           style={{marginHorizontal: 20}}
           onPress={() => props.navigation.navigate('TabNavigation')}>

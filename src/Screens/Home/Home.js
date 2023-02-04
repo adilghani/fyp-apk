@@ -18,9 +18,12 @@ import {primary, WhiteColor} from '../../Utils/ColorScheme/Colors';
 import {Dimensions} from 'react-native';
 import storage from '@react-native-firebase/storage';
 import {firebase} from '@react-native-firebase/firestore';
-import {useFocusEffect} from '@react-navigation/native';
+import {CommonActions, useFocusEffect} from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
 import {Medium} from '../../Utils/FontFamily/Fonfamily';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {save_role} from '../Login/Login';
 
 const Home = props => {
   const [message, setMessage] = React.useState('');
@@ -32,7 +35,17 @@ const Home = props => {
   const [productsname, setProductName] = React.useState([]);
   const [index, setIndex] = React.useState(0);
   console.log(index);
-
+  const logout = async () => {
+    const value = await save_role('null');
+    await AsyncStorage.removeItem('id');
+    props.navigation.navigate('Login');
+    props.navigation.dispatch(
+      CommonActions.reset({
+        index: 1,
+        routes: [{name: 'GuestHome'}],
+      }),
+    );
+  };
   const swiper = React.useRef(null);
   console.log('data', productsname);
   const familyregister = async () => {
@@ -150,7 +163,11 @@ const Home = props => {
   // ];
   return (
     <View style={styles.main}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
+      <StatusBar
+        barStyle={'light-content'}
+        translucent
+        backgroundColor={'transparent'}
+      />
       <Modal
         isVisible={loading}
         style={{
@@ -247,7 +264,17 @@ const Home = props => {
             source={require('../../components/assets/on3.jpeg')}
             style={{width: '100%', height: 300, resizeMode: 'cover'}}>
             <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)'}}>
-              <View style={{alignItems: 'center', marginTop: '30%'}}>
+              <View
+                style={{
+                  alignSelf: 'flex-end',
+                  marginHorizontal: 20,
+                  marginTop: 40,
+                }}>
+                <TouchableOpacity onPress={logout}>
+                  <MaterialIcons name="logout" color={WhiteColor} size={30} />
+                </TouchableOpacity>
+              </View>
+              <View style={{alignItems: 'center', marginTop: '10%'}}>
                 <Text
                   style={{fontSize: 24, fontFamily: Medium, color: WhiteColor}}>
                   Buy good Product which you want{' '}
@@ -259,7 +286,17 @@ const Home = props => {
             source={require('../../components/assets/on2.jpeg')}
             style={{width: '100%', height: 300, resizeMode: 'cover'}}>
             <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)'}}>
-              <View style={{alignItems: 'center', marginTop: '30%'}}>
+              <View
+                style={{
+                  alignSelf: 'flex-end',
+                  marginHorizontal: 20,
+                  marginTop: 40,
+                }}>
+                <TouchableOpacity onPress={logout}>
+                  <MaterialIcons name="logout" color={WhiteColor} size={30} />
+                </TouchableOpacity>
+              </View>
+              <View style={{alignItems: 'center', marginTop: '10%'}}>
                 <Text
                   style={{fontSize: 24, fontFamily: Medium, color: WhiteColor}}>
                   Buy good Product which you want{' '}
@@ -271,7 +308,17 @@ const Home = props => {
             source={require('../../components/assets/on1.jpeg')}
             style={{width: '100%', height: 300, resizeMode: 'cover'}}>
             <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)'}}>
-              <View style={{alignItems: 'center', marginTop: '30%'}}>
+              <View
+                style={{
+                  alignSelf: 'flex-end',
+                  marginHorizontal: 20,
+                  marginTop: 40,
+                }}>
+                <TouchableOpacity onPress={logout}>
+                  <MaterialIcons name="logout" color={WhiteColor} size={30} />
+                </TouchableOpacity>
+              </View>
+              <View style={{alignItems: 'center', marginTop: '10%'}}>
                 <Text
                   style={{fontSize: 24, fontFamily: Medium, color: WhiteColor}}>
                   Buy good Product which you want{' '}

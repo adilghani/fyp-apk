@@ -160,7 +160,15 @@ const ViewDetailProduct = props => {
   };
   return (
     <View style={styles.main}>
+<<<<<<< HEAD
       {/* <StatusBar barStyle={'light-content'} backgroundColor={'transparent'} /> */}
+=======
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor={'transparent'}
+        translucent
+      />
+>>>>>>> 9c73260 (updated new code due to conflict in github)
       <Modal
         isVisible={loading}
         style={{
@@ -411,7 +419,11 @@ const ViewDetailProduct = props => {
             style={{width: '100%', height: 300, resizeMode: 'cover'}}>
             <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}>
               <TouchableOpacity
+<<<<<<< HEAD
                 style={{marginTop: 20, marginHorizontal: 20}}
+=======
+                style={{marginTop: 40, marginHorizontal: 20}}
+>>>>>>> 9c73260 (updated new code due to conflict in github)
                 onPress={() => props.navigation.navigate('TabNavigation')}>
                 <WhiteLeft />
               </TouchableOpacity>
@@ -437,7 +449,11 @@ const ViewDetailProduct = props => {
             style={{width: '100%', height: 300, resizeMode: 'cover'}}>
             <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}>
               <TouchableOpacity
+<<<<<<< HEAD
                 style={{marginTop: 20, marginHorizontal: 20}}
+=======
+                style={{marginTop: 40, marginHorizontal: 20}}
+>>>>>>> 9c73260 (updated new code due to conflict in github)
                 onPress={() => props.navigation.navigate('TabNavigation')}>
                 <WhiteLeft />
               </TouchableOpacity>
@@ -463,7 +479,11 @@ const ViewDetailProduct = props => {
             style={{width: '100%', height: 300, resizeMode: 'cover'}}>
             <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}>
               <TouchableOpacity
+<<<<<<< HEAD
                 style={{marginTop: 20, marginHorizontal: 20}}
+=======
+                style={{marginTop: 40, marginHorizontal: 20}}
+>>>>>>> 9c73260 (updated new code due to conflict in github)
                 onPress={() => props.navigation.navigate('TabNavigation')}>
                 <WhiteLeft />
               </TouchableOpacity>

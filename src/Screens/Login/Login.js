@@ -14,6 +14,11 @@ import Danger from '../../../assets/images/Danger';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CommonActions} from '@react-navigation/native';
+<<<<<<< HEAD
+=======
+import {Image} from 'react-native';
+import {ScrollView} from 'react-native';
+>>>>>>> 9c73260 (updated new code due to conflict in github)
 
 export const save_user_id = async id => {
   await AsyncStorage.setItem('id', JSON.stringify(id));
@@ -185,6 +190,7 @@ const Login = props => {
           </View>
         </View>
       </Dialog.Container>
+<<<<<<< HEAD
       <Text style={styles.loginheader}>Sign-in</Text>
       <View style={{marginTop: 30, alignSelf: 'center'}}>
         <Input
@@ -219,6 +225,62 @@ const Login = props => {
             Sing-Up
           </Text>
         </TouchableOpacity>
+=======
+      <View
+        style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 180,
+          height: 200,
+          aspectRatio: 1 * 1.4,
+          alignSelf: 'center',
+          marginTop: 30,
+        }}>
+        <Image
+          source={require('../../components/assets/Logo.jpeg')}
+          style={{width: '100%', height: '100%', resizeMode: 'cover'}}
+        />
+      </View>
+      <View style={{flex: 1}}>
+        <ScrollView>
+          {/* <Text style={styles.loginheader}>Sign-in</Text> */}
+          <View style={{alignSelf: 'center'}}>
+            <Input
+              placeholder={'Enter Email'}
+              titleInput={'Email'}
+              value={email}
+              onChangeText={text => setemail(text)}
+            />
+
+            <Input
+              placeholder={'Enter password'}
+              titleInput={'Password'}
+              value={password}
+              onChangeText={text => setpassword(text)}
+              secureTextEntry={true}
+            />
+          </View>
+
+          <View style={{marginTop: 30}}>
+            <Button ButtonTitle={'Sign-In'} onPress={Loginwithemail} />
+          </View>
+          <View
+            style={[
+              styles.forgotpasswordcon,
+              {flexDirection: 'row', marginTop: 10, alignSelf: 'flex-start'},
+            ]}>
+            <Text style={[styles.forgotpasswordtext, {color: Darkcolor}]}>
+              Already have an Account
+            </Text>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate('Sinup')}>
+              <Text style={[styles.forgotpasswordtext, {marginLeft: 5}]}>
+                Sing-Up
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+>>>>>>> 9c73260 (updated new code due to conflict in github)
       </View>
     </View>
   );

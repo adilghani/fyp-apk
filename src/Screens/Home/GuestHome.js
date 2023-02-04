@@ -168,7 +168,15 @@ const GuestHome = props => {
   // ];
   return (
     <View style={styles.main}>
+<<<<<<< HEAD
       <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
+=======
+      <StatusBar
+        barStyle={'light-content'}
+        translucent
+        backgroundColor={'transparent'}
+      />
+>>>>>>> 9c73260 (updated new code due to conflict in github)
       <Modal
         isVisible={loading}
         style={{
@@ -265,11 +273,46 @@ const GuestHome = props => {
             source={require('../../components/assets/on3.jpeg')}
             style={{width: '100%', height: 300, resizeMode: 'cover'}}>
             <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)'}}>
+<<<<<<< HEAD
               <View style={{alignItems: 'center', marginTop: '30%'}}>
+=======
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginTop: '30%',
+                }}>
+>>>>>>> 9c73260 (updated new code due to conflict in github)
                 <Text
                   style={{fontSize: 24, fontFamily: Medium, color: WhiteColor}}>
                   Buy good Product which you want{' '}
                 </Text>
+<<<<<<< HEAD
+=======
+                <TouchableOpacity
+                  style={{
+                    // alignSelf: 'flex-end',
+                    marginTop: 10,
+                    marginHorizontal: 20,
+                    height: 40,
+                    width: 130,
+                    backgroundColor: primary,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    borderRadius: 5,
+                  }}
+                  onPress={() => props.navigation.navigate('Login')}>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontFamily: Medium,
+                      color: WhiteColor,
+                    }}>
+                    Sign-In
+                  </Text>
+                </TouchableOpacity>
+>>>>>>> 9c73260 (updated new code due to conflict in github)
               </View>
             </View>
           </ImageBackground>
@@ -282,6 +325,32 @@ const GuestHome = props => {
                   style={{fontSize: 24, fontFamily: Medium, color: WhiteColor}}>
                   Buy good Product which you want{' '}
                 </Text>
+<<<<<<< HEAD
+=======
+                <TouchableOpacity
+                  style={{
+                    // alignSelf: 'flex-end',
+                    marginTop: 10,
+                    marginHorizontal: 20,
+                    height: 40,
+                    width: 130,
+                    backgroundColor: primary,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    borderRadius: 5,
+                  }}
+                  onPress={() => props.navigation.navigate('Login')}>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontFamily: Medium,
+                      color: WhiteColor,
+                    }}>
+                    Sign-In
+                  </Text>
+                </TouchableOpacity>
+>>>>>>> 9c73260 (updated new code due to conflict in github)
               </View>
             </View>
           </ImageBackground>
@@ -294,6 +363,32 @@ const GuestHome = props => {
                   style={{fontSize: 24, fontFamily: Medium, color: WhiteColor}}>
                   Buy good Product which you want{' '}
                 </Text>
+<<<<<<< HEAD
+=======
+                <TouchableOpacity
+                  style={{
+                    // alignSelf: 'flex-end',
+                    marginTop: 10,
+                    marginHorizontal: 20,
+                    height: 40,
+                    width: 130,
+                    backgroundColor: primary,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    alignSelf: 'center',
+                    borderRadius: 5,
+                  }}
+                  onPress={() => props.navigation.navigate('Login')}>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontFamily: Medium,
+                      color: WhiteColor,
+                    }}>
+                    Sign-In
+                  </Text>
+                </TouchableOpacity>
+>>>>>>> 9c73260 (updated new code due to conflict in github)
               </View>
             </View>
           </ImageBackground>
