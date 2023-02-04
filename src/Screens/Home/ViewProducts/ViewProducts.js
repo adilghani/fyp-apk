@@ -57,14 +57,11 @@ const ViewProducts = props => {
   ];
   return (
     <View style={styles.main}>
-<<<<<<< HEAD
-=======
       <StatusBar
         barStyle={'light-content'}
         translucent
         backgroundColor={'transparent'}
       />
->>>>>>> 9c73260 (updated new code due to conflict in github)
       <View style={styles.searchcon}>
         <TouchableOpacity>
           <Right />

@@ -14,11 +14,8 @@ import Danger from '../../../assets/images/Danger';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CommonActions} from '@react-navigation/native';
-<<<<<<< HEAD
-=======
 import {Image} from 'react-native';
 import {ScrollView} from 'react-native';
->>>>>>> 9c73260 (updated new code due to conflict in github)
 
 export const save_user_id = async id => {
   await AsyncStorage.setItem('id', JSON.stringify(id));
@@ -190,42 +187,6 @@ const Login = props => {
           </View>
         </View>
       </Dialog.Container>
-<<<<<<< HEAD
-      <Text style={styles.loginheader}>Sign-in</Text>
-      <View style={{marginTop: 30, alignSelf: 'center'}}>
-        <Input
-          placeholder={'Enter Email'}
-          titleInput={'Email'}
-          value={email}
-          onChangeText={text => setemail(text)}
-        />
-
-        <Input
-          placeholder={'Enter password'}
-          titleInput={'Password'}
-          value={password}
-          onChangeText={text => setpassword(text)}
-          secureTextEntry={true}
-        />
-      </View>
-
-      <View style={{marginTop: 30}}>
-        <Button ButtonTitle={'Sign-In'} onPress={Loginwithemail} />
-      </View>
-      <View
-        style={[
-          styles.forgotpasswordcon,
-          {flexDirection: 'row', marginTop: 10, alignSelf: 'flex-start'},
-        ]}>
-        <Text style={[styles.forgotpasswordtext, {color: Darkcolor}]}>
-          Already have an Account
-        </Text>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Sinup')}>
-          <Text style={[styles.forgotpasswordtext, {marginLeft: 5}]}>
-            Sing-Up
-          </Text>
-        </TouchableOpacity>
-=======
       <View
         style={{
           alignItems: 'center',
@@ -280,7 +241,6 @@ const Login = props => {
             </TouchableOpacity>
           </View>
         </ScrollView>
->>>>>>> 9c73260 (updated new code due to conflict in github)
       </View>
     </View>
   );

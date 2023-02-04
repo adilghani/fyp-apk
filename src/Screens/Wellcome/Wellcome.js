@@ -27,11 +27,8 @@ const Wellcome = props => {
 
   return (
     <View style={{flex: 1, backgroundColor: WhiteColor}}>
-<<<<<<< HEAD
-=======
       <StatusBar backgroundColor={'transparent'} barStyle={'dark-content'} />
 
->>>>>>> 9c73260 (updated new code due to conflict in github)
       <ImageBackground
         source={require('../../components/assets/Logo.jpeg')}
         style={{
