@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     backgroundColor: primary,
     height: 70,
     width: '100%',
+    marginTop: 30,
   },
   cattitle: {
     fontSize: 20,

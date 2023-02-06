@@ -6,12 +6,17 @@ import {View, Text, Image, TouchableOpacity} from 'react-native';
 import LeftIconForWhite from '../../../assets/images/LeftIconforWhite';
 import WhiteLeft from '../../../assets/images/WhiteLeft';
 import {primary, WhiteColor} from '../../Utils/ColorScheme/Colors';
-import {SemiBold} from '../../Utils/FontFamily/Fonfamily';
+import {Medium, SemiBold} from '../../Utils/FontFamily/Fonfamily';
 import styles from './orderdetailstyle';
 import Barcode from 'react-native-barcode-builder';
 import RightIconForWhite from '../../../assets/images/RightIconforWhite';
 import Swiper from 'react-native-swiper';
-
+import {Dimensions} from 'react-native';
+import Danger from '../../../assets/images/Danger';
+import Modal from 'react-native-modal';
+import Spinner from 'react-native-spinkit';
+import Dialog from 'react-native-dialog';
+import {firebase} from '@react-native-firebase/firestore';
 const OrderDetail = props => {
   const [userid, setuserid] = React.useState();
   const [dialogVisible, setdialogVisible] = React.useState(false);
@@ -27,6 +32,7 @@ const OrderDetail = props => {
   const [delievrypoint, setDeleiveryPoinr] = React.useState();
   const {item, image1, image2, image3} = props.route.params;
 
+  const [deleteVisible, setdeleteVisible] = React.useState(false);
   const getadminid = async () => {
     const getid = await AsyncStorage.getItem('id');
     console.log('getid', getid);
@@ -35,11 +41,154 @@ const OrderDetail = props => {
   React.useEffect(() => {
     getadminid();
   }, []);
+  const Delete = () => {
+    setLoading(true);
+    console.log('docid', item?.id);
+    firebase
+      .firestore()
+      .collection('Orders')
+      .doc(item?.id)
+      .delete()
+      .then(() => {
+        setLoading(false);
+        setdialogVisible(true);
+        setMessage('Your Orders has been deleted Successfully');
+        setwhatopen('done');
 
+        // Alert.alert(
+        //   'Product Deleted',
+
+        // );
+      })
+      .catch(e => {
+        setLoading(false);
+
+        console.log('error while deleting', e);
+        setdialogVisible(true);
+        setMessage('Error while deleting please try agian');
+        setwhatopen('notdone');
+      });
+  };
   return (
     <View style={styles.main}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
+      <StatusBar
+        barStyle={'light-content'}
+        translucent
+        backgroundColor={'transparent'}
+      />
+      <Modal
+        isVisible={loading}
+        style={{
+          flex: 1,
+          margin: 0,
+          // height: height,
+          // width: width,
+          backgroundColor: 'transparent',
+        }}>
+        <View
+          style={{
+            flex: 1,
+            margin: 0,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'transparent',
+          }}>
+          <Spinner type="ThreeBounce" size={50} color={primary} />
+        </View>
+      </Modal>
+      <Dialog.Container
+        visible={dialogVisible}
+        contentStyle={{
+          borderRadius: 10,
+          backgroundColor: WhiteColor,
+          width: Dimensions.get('screen').width / 1.1,
+        }}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          {whatopen == 'done' ? null : <Danger />}
 
+          <View style={styles.cancelcon}>
+            <Text style={styles.canceltilte}>
+              {' '}
+              {whatopen == 'done' ? 'Success' : 'Error'}
+            </Text>
+            <Text style={styles.canceldet}>{message}</Text>
+          </View>
+          <View style={styles.cancelbtncon}>
+            <TouchableOpacity
+              onPress={() => {
+                whatopen == 'done'
+                  ? props.navigation.navigate('MyOrders') &
+                    setdialogVisible(false) &
+                    setdeleteVisible(false)
+                  : setdialogVisible(false);
+              }}
+              style={[
+                styles.cancelbtn,
+                {
+                  borderWidth: 2,
+                  borderColor: primary,
+                  backgroundColor: primary,
+                  marginLeft: 15,
+                  marginTop: 30,
+                },
+              ]}>
+              <Text style={[styles.cancelbtntitle, {color: WhiteColor}]}>
+                {whatopen == 'done' ? 'Continue' : 'Try Again'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Dialog.Container>
+      <Dialog.Container
+        visible={deleteVisible}
+        contentStyle={{
+          borderRadius: 10,
+          backgroundColor: WhiteColor,
+          width: Dimensions.get('screen').width / 1.1,
+        }}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          {whatopen == 'done' || whatopen == 'deletedone' ? null : <Danger />}
+
+          <View style={styles.cancelcon}>
+            <Text style={styles.canceltilte}>Warning!</Text>
+            <Text style={styles.canceldet}>
+              Are you sure,want to delete this Product?
+            </Text>
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <TouchableOpacity
+              onPress={() => setdeleteVisible(false)}
+              style={[
+                styles.cancelbtn,
+                {
+                  backgroundColor: primary,
+                  width: Dimensions.get('screen').width / 2.9,
+                  marginLeft: 15,
+                },
+              ]}>
+              <Text
+                style={{fontSize: 16, fontFamily: Medium, color: WhiteColor}}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => Delete() & setdeleteVisible(false)}
+              style={[
+                styles.cancelbtn,
+                {
+                  backgroundColor: primary,
+                  width: Dimensions.get('screen').width / 2.9,
+                  marginLeft: 17,
+                },
+              ]}>
+              <Text
+                style={{fontSize: 16, fontFamily: Medium, color: WhiteColor}}>
+                Ok
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Dialog.Container>
       <View style={{height: 300}}>
         <Swiper
           ref={swiper}
@@ -267,6 +416,18 @@ const OrderDetail = props => {
             }}>
             <Text style={styles.tilespe}>Description</Text>
             <Text style={styles.banrd}>{item?.description}</Text>
+          </View>
+          <View
+            style={{
+              alignSelf: 'flex-end',
+              paddingHorizontal: 10,
+              marginTop: 30,
+            }}>
+            <TouchableOpacity
+              style={styles.btn}
+              onPress={() => setdeleteVisible(true)}>
+              <Text style={styles.btntitle}>Delete</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </View>

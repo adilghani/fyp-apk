@@ -24,6 +24,7 @@ import Dialog from 'react-native-dialog';
 import Danger from '../../../assets/images/Danger';
 import TrashIcon from '../../../assets/images/TrashIcon';
 import {CommonActions} from '@react-navigation/native';
+import {StatusBar} from 'react-native';
 
 const AdminProfile = props => {
   const [useremail, setuseremail] = React.useState();
@@ -140,6 +141,7 @@ const AdminProfile = props => {
 
   return (
     <View style={styles.main}>
+      <StatusBar barStyle={'dark-content'} backgroundColor={WhiteColor} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <Modal
           isVisible={loading}
@@ -207,7 +209,7 @@ const AdminProfile = props => {
             flexDirection: 'row',
             justifyContent: 'space-between',
             marginHorizontal: 10,
-            marginTop: 20,
+            marginTop: 40,
           }}>
           <TouchableOpacity
             onPress={() => props.navigation.navigate('AdminTab')}>
@@ -215,7 +217,7 @@ const AdminProfile = props => {
           </TouchableOpacity>
 
           <TouchableOpacity onPress={logout}>
-            <Text style={styles.title}>Logout</Text>
+            <Text style={[styles.title, {marginTop: 0}]}>Logout</Text>
           </TouchableOpacity>
         </View>
         <View style={{justifyContent: 'center', alignItems: 'center'}}>

@@ -427,6 +427,7 @@ const GuestHome = props => {
                             image1: item?.productImage[0],
                             image2: item?.productImage[1],
                             image3: item?.productImage[2],
+                            fromcome: 'GuestHome',
                           })
                         }>
                         <Image

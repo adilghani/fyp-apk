@@ -207,7 +207,11 @@ const AdminAddCategories = props => {
 
   return (
     <View style={styles.main}>
-      <StatusBar barStyle={'light-content'} backgroundColor={primary} />
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor={primary}
+        translucent
+      />
       <Modal
         isVisible={loading}
         style={{

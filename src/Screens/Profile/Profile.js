@@ -1,10 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CommonActions} from '@react-navigation/native';
 import React from 'react';
+import {StatusBar} from 'react-native';
 import {TouchableOpacity, View, Image, Text, FlatList} from 'react-native';
 import LeftICon from '../../../assets/images/Lefticon';
 import Right from '../../../assets/images/Right';
 import WhiteLeft from '../../../assets/images/WhiteLeft';
+import {primary, WhiteColor} from '../../Utils/ColorScheme/Colors';
 import {save_role} from '../Login/Login';
 import styles from './styles';
 const Profile = props => {
@@ -45,6 +47,8 @@ const Profile = props => {
   ];
   return (
     <View style={styles.main}>
+      <StatusBar barStyle={'light-content'} backgroundColor={primary} />
+
       <View style={styles.catcon}>
         <TouchableOpacity
           style={{marginHorizontal: 20}}

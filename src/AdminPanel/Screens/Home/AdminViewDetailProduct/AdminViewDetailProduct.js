@@ -25,6 +25,7 @@ import {Medium, SemiBold} from '../../../../Utils/FontFamily/Fonfamily';
 import Swiper from 'react-native-swiper';
 import WhiteLeft from '../../../../../assets/images/WhiteLeft';
 import RightIconForWhite from '../../../../../assets/images/RightIconforWhite';
+import {ActivityIndicator} from 'react-native';
 
 const AdminViewDetailProduct = props => {
   const {item, image1, image2, image3} = props.route.params;
@@ -222,6 +223,9 @@ const AdminViewDetailProduct = props => {
       </Dialog.Container>
       <View style={{height: 300}}>
         <Swiper
+          loadMinimalLoader={
+            <ActivityIndicator color={primary} size={'large'} />
+          }
           ref={swiper}
           index={index}
           activeDotColor={'#77E6B6'}
@@ -256,8 +260,8 @@ const AdminViewDetailProduct = props => {
             style={{width: '100%', height: 300, resizeMode: 'cover'}}>
             <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}>
               <TouchableOpacity
-                style={{marginTop: 20, marginHorizontal: 20}}
-                onPress={() => props.navigation.navigate('TabNavigation')}>
+                style={{marginTop: 40, marginHorizontal: 20}}
+                onPress={() => props.navigation.navigate('AdminHome')}>
                 <WhiteLeft />
               </TouchableOpacity>
               <View
@@ -282,8 +286,8 @@ const AdminViewDetailProduct = props => {
             style={{width: '100%', height: 300, resizeMode: 'cover'}}>
             <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}>
               <TouchableOpacity
-                style={{marginTop: 20, marginHorizontal: 20}}
-                onPress={() => props.navigation.navigate('TabNavigation')}>
+                style={{marginTop: 40, marginHorizontal: 20}}
+                onPress={() => props.navigation.navigate('AdminHome')}>
                 <WhiteLeft />
               </TouchableOpacity>
               <View
@@ -308,8 +312,8 @@ const AdminViewDetailProduct = props => {
             style={{width: '100%', height: 300, resizeMode: 'cover'}}>
             <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}>
               <TouchableOpacity
-                style={{marginTop: 20, marginHorizontal: 20}}
-                onPress={() => props.navigation.navigate('TabNavigation')}>
+                style={{marginTop: 40, marginHorizontal: 20}}
+                onPress={() => props.navigation.navigate('AdminHome')}>
                 <WhiteLeft />
               </TouchableOpacity>
               <View

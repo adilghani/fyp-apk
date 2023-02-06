@@ -59,13 +59,13 @@ const styles = StyleSheet.create({
     fontFamily: Regular,
     color: maintitle,
     fontSize: 16,
-    width: '70%',
+    // width: '70%',
   },
   btn: {
     width: Dimensions.get('screen').width / 2,
     height: 60,
     borderRadius: 10,
-    backgroundColor: primary,
+    backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -73,6 +73,40 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: SemiBold,
     color: WhiteColor,
+  },
+  cancelcon: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  canceltilte: {
+    fontSize: 20,
+    fontFamily: SemiBold,
+    color: maintitle,
+    marginBottom: 10,
+    marginTop: 10,
+  },
+  canceldet: {
+    fontSize: 18,
+    fontFamily: Regular,
+    color: maintitle,
+    textAlign: 'center',
+    marginHorizontal: 10,
+    marginBottom: 10,
+  },
+  cancelbtncon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  cancelbtn: {
+    width: Dimensions.get('screen').width / 2.8,
+    height: 45,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cancelbtntitle: {
+    fontSize: 16,
+    fontFamily: Medium,
   },
 });
 export default styles;

@@ -21,6 +21,7 @@ import {firebase} from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LeftIconForWhite from '../../../../assets/images/LeftIconforWhite';
 import WhiteLeft from '../../../../assets/images/WhiteLeft';
+import {useFocusEffect} from '@react-navigation/native';
 
 const Adminorders = props => {
   const [message, setMessage] = React.useState('');
@@ -41,7 +42,13 @@ const Adminorders = props => {
   // React.useEffect(() => {
   //   getadminid();
   // }, [data]);
+  useFocusEffect(
+    React.useCallback(() => {
+      getImage();
 
+      // return () => unsubscribe();
+    }, []),
+  );
   const getImage = async () => {
     setLoading(true);
     await firebase
@@ -57,6 +64,8 @@ const Adminorders = props => {
         const pro = [];
         querySnapshot.forEach(snapshot => {
           let data = snapshot.data();
+          data.id = snapshot.id;
+          console.log('userdata', data.id);
           console.log('userdata', data.userid + userid);
           arr.push(data);
 
@@ -142,7 +151,11 @@ const Adminorders = props => {
   // ];
   return (
     <View style={styles.main}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
+      <StatusBar
+        barStyle={'light-content'}
+        backgroundColor={primary}
+        translucent
+      />
       <Modal
         isVisible={loading}
         style={{
@@ -204,7 +217,7 @@ const Adminorders = props => {
         </View>
       </Dialog.Container>
 
-      <View style={styles.catcon}>
+      <View style={[styles.catcon, {marginTop: 30}]}>
         <TouchableOpacity
           style={{marginHorizontal: 20}}
           onPress={() => props.navigation.navigate('AdminTab')}>

@@ -20,6 +20,7 @@ import {firebase} from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './style';
 import WhiteLeft from '../../../assets/images/WhiteLeft';
+import {useFocusEffect} from '@react-navigation/native';
 
 const MyOrders = props => {
   const [message, setMessage] = React.useState('');
@@ -40,7 +41,14 @@ const MyOrders = props => {
   // React.useEffect(() => {
   //   getadminid();
   // }, [data]);
+  useFocusEffect(
+    React.useCallback(() => {
+      getImage();
+      getadminid();
 
+      // return () => unsubscribe();
+    }, []),
+  );
   const getImage = async () => {
     setLoading(true);
     await firebase
@@ -56,6 +64,8 @@ const MyOrders = props => {
         const pro = [];
         querySnapshot.forEach(snapshot => {
           let data = snapshot.data();
+          data.id = snapshot.id;
+          console.log('userdata', data.id);
           console.log('userdata', data.userid + userid);
           if (data?.ordersubmitownerid == userid) {
             console.log('datacondition', data);

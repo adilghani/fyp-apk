@@ -42,7 +42,7 @@ const ViewDetailProduct = props => {
   console.log(index);
 
   const swiper = React.useRef(null);
-  const {item, image1, image2, image3} = props.route.params;
+  const {item, image1, image2, image3, fromcome} = props.route.params;
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('null&');
   const [items, setItems] = useState([
@@ -416,7 +416,13 @@ const ViewDetailProduct = props => {
             <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}>
               <TouchableOpacity
                 style={{marginTop: 40, marginHorizontal: 20}}
-                onPress={() => props.navigation.navigate('TabNavigation')}>
+                onPress={() => {
+                  fromcome == 'GuestHome'
+                    ? props.navigation.navigate('GuestHome')
+                    : fromcome == 'Cart'
+                    ? props.navigation.navigate('Cart')
+                    : props.navigation.navigate('TabNavigation');
+                }}>
                 <WhiteLeft />
               </TouchableOpacity>
               <View
@@ -442,7 +448,13 @@ const ViewDetailProduct = props => {
             <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}>
               <TouchableOpacity
                 style={{marginTop: 40, marginHorizontal: 20}}
-                onPress={() => props.navigation.navigate('TabNavigation')}>
+                onPress={() => {
+                  fromcome == 'GuestHome'
+                    ? props.navigation.navigate('GuestHome')
+                    : fromcome == 'Cart'
+                    ? props.navigation.navigate('Cart')
+                    : props.navigation.navigate('TabNavigation');
+                }}>
                 <WhiteLeft />
               </TouchableOpacity>
               <View
@@ -468,7 +480,13 @@ const ViewDetailProduct = props => {
             <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.3)'}}>
               <TouchableOpacity
                 style={{marginTop: 40, marginHorizontal: 20}}
-                onPress={() => props.navigation.navigate('TabNavigation')}>
+                onPress={() => {
+                  fromcome == 'GuestHome'
+                    ? props.navigation.navigate('GuestHome')
+                    : fromcome == 'Cart'
+                    ? props.navigation.navigate('Cart')
+                    : props.navigation.navigate('TabNavigation');
+                }}>
                 <WhiteLeft />
               </TouchableOpacity>
               <View

@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   headercon: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 40,
     marginHorizontal: 10,
   },
   addtitle: {

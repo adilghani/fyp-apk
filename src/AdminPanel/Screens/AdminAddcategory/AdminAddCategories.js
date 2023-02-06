@@ -4,6 +4,7 @@ import {
   ImageBackground,
   Platform,
   ScrollView,
+  StatusBar,
   Text,
   TouchableOpacity,
   View,
@@ -202,6 +203,8 @@ const AdminAddCategories = props => {
 
   return (
     <View style={styles.main}>
+      <StatusBar barStyle={'dark-content'} backgroundColor={WhiteColor} />
+
       <Modal
         isVisible={loading}
         style={{
